@@ -4,15 +4,23 @@ import HelloWorker from './GameWorker.js';
 import "./game.css"
 
 function Game() {
-    const assets = ["http://localhost:5000/pokemon_terrain.jpg","http://localhost:5000/pokemon_terrain_copy.jpg","http://localhost:5000/pokemon_terrain_copy.jpg"]
-    const canvasRef = useRef(null);
+    const mazeCanvasRef = useRef(null);
+    const roomCanvasRef = useRef(null);
     const [bitMaps,setBitMaps] = useState([])
 
 useEffect(() => {
     if(bitMaps.length === document.images.length){
         const helloWorker = new WebWorker(HelloWorker);
-        const offscreen = canvasRef.current.transferControlToOffscreen();
-        helloWorker.postMessage({canvas: offscreen,assets:bitMaps[0]}, [offscreen,bitMaps[0]]);
+        const offscreen = mazeCanvasRef.current.transferControlToOffscreen();
+
+        const assetsObj = {canvas: offscreen}
+        bitMaps.forEach(e => {
+            assetsObj[Object.keys(e)[0] ] = Object.values(e)[0]
+        })
+        const assetsArray = bitMaps.map(e => Object.values(e)[0])
+
+
+        helloWorker.postMessage(assetsObj, [offscreen, ...assetsArray ]);
 
         const keyHandler = function(event){
             helloWorker.postMessage({msg: event.code});
@@ -20,25 +28,26 @@ useEffect(() => {
 
         document.addEventListener("keypress",keyHandler)
 
+
         return () => document.addEventListener("keypress",keyHandler)
     }
 },[bitMaps])
 
 const loadHandler = event => {
-
+    const name = event.target.id
     createImageBitmap(event.target, 0, 0, event.target.naturalWidth, event.target.naturalHeight)
     .then(res => {
-        const background = res
-        setBitMaps([...bitMaps,background])
+        setBitMaps([...bitMaps,{[name]:res}])
     })
     .catch(err => console.log(err))
 }
 
     return (
         <React.Fragment>
-            <canvas ref={canvasRef} id="canvas" width="500" height="500" />
-            <img onLoad={loadHandler} id="background" src="http://localhost:5000/pokemon_terrain.jpg" style={{"display":"none"}} alt="hidden_image"/>
-            <img onLoad={loadHandler} id="another" src="http://localhost:5000/pokemon_terrain_copy.jpg" style={{"display":"none"}} alt="hidden_image"/>
+            <canvas ref={mazeCanvasRef} id="room-canvas" width="500" height="500" />
+            <canvas ref={roomCanvasRef} id="maze-canvas" width="500" height="500" />
+            <img onLoad={loadHandler} id="background" src="https://maze-mud-image-server.herokuapp.com/Dungeon_Tileset.png" style={{"display":"none"}} alt="hidden_image"/>
+            <img onLoad={loadHandler} id="player" src="https://maze-mud-image-server.herokuapp.com/player.png" style={{"display":"none"}} alt="hidden_image"/>
         </React.Fragment>
     );
 }
