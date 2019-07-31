@@ -23,10 +23,11 @@ useEffect(() => {
         helloWorker.postMessage(assetsObj, [offscreen, ...assetsArray ]);
 
         const keyHandler = function(event){
-            helloWorker.postMessage({msg: event.code});
+            helloWorker.postMessage({msg: {[ event.type ]: event.code}});
         }
 
-        document.addEventListener("keypress",keyHandler)
+        document.addEventListener("keyup",keyHandler)
+        document.addEventListener("keydown",keyHandler)
 
 
         return () => document.addEventListener("keypress",keyHandler)
