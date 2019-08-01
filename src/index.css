@@ -267,7 +267,48 @@
  [hidden] {
    display: none !important; }
 
-canvas#room-canvas {
-  height: auto;
-  width: 50%
+
+
+div.LoginContainer {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 12px;
+  margin: 0 auto;
+  color: white;
+  background-color: rgb(50, 150, 128);
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+div.RegisterContainer {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 10px;
+  margin: 0 auto;
+  color: white;
+  background-color: rgb(50, 150, 128);
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+form input {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  justify-content: space-evenly
 }
