@@ -21,6 +21,7 @@ useEffect(() => {
 
 
         helloWorker.postMessage(assetsObj, [offscreen, ...assetsArray ]);
+        helloWorker.postMessage({token: (localStorage.getItem('token'))});
 
         const keyHandler = function(event){
             helloWorker.postMessage({msg: {[ event.type ]: event.code}});

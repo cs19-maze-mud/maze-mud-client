@@ -118,10 +118,9 @@ class App extends Component {
 
         }
         <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={ this.normalStart } hardStart={ this.hardStart } joinAFriend={ this.joinAFriend } startGame = {this.startGame} />} />
-        <Route exact path='/register' component={Register} />
+        <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
-        <Route exact path='/game' render={() => <Game {...this.props} />} />
-
+        <Route exact path='/game' component={Game} />
       </div>
     );
   }

@@ -1,6 +1,5 @@
 import './game.css';
 
-
 export default () => {
     var ctx = null;
     var bg = null;
@@ -17,6 +16,7 @@ export default () => {
     var box = null;
     var banner = null;
     var sidetorch = null;
+    var token = null;
 
     //AVAILABLE DOORS IN CURRENT ROOM
     var s = -1
@@ -210,18 +210,43 @@ export default () => {
         }
     }
 
+    const handleMove = (direction) => {
+        fetch('https://maze-mud-server.herokuapp.com/api/adv/move/', {
+            method: 'post',
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify({direction})
+        })
+          .then(function (data) {
+            console.log('Request succeeded with JSON response', data);
+        })
+          .catch(function (error) {
+            console.log('Request failed', error);
+        });
+        
+        
+        
+        
+    }
+
     function nextRoom( direction ) {
         console.log( direction , 'room' )
 
         if ( direction === 'south' ) {
             player1.y = 10
+            handleMove('s')
         } else if ( direction === 'north' ) {
             player1.y = 470
+            handleMove('n')
         } else if ( direction === 'west' ) {
             player1.x = 470
             player1.y = 250
+            handleMove('w')
         } else {
             player1.x = 20
+            handleMove('e')
         }
 
         
@@ -231,12 +256,15 @@ export default () => {
 
 
     self.addEventListener('message', event => { // eslint-disable-line no-restricted-globals
+        if (Object.keys(event.data).includes('token')) {
+            token = event.data.token;
+        }
 
-        if (event.data.msg) {
+        else if (event.data.msg) {
             player1.move(event.data.msg)
         }
 
-        if (!event.data.msg) {
+        if (event.data.canvas) {
 
             ctx = event.data.canvas.getContext("2d");
             bg = event.data.background

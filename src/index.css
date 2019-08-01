@@ -27,7 +27,7 @@
    line-height: 1.5;
    color: #212529;
    text-align: left;
-   background-color: #fff; }
+   background-color: rgb(27, 25, 25); }
  
  [tabindex="-1"]:focus {
    outline: 0 !important; }
