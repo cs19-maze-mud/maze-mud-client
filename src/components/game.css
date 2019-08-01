@@ -1,22 +1,12 @@
+
+
 canvas#room-canvas {
     border: 1px solid black;
-    /* animation: slide-out-top 4s 1; */
-    /* animation-fill-mode: forwards;   */
+    height: auto;
+    width: 60%;
+    margin: 0 auto
 }
 
-
-@keyframes slide-out-top {
-    0% {
-      -webkit-transform: translateY(0);
-              transform: translateY(0);
-      opacity: 1;
-    }
-    100% {
-      -webkit-transform: translateY(-1000px);
-              transform: translateY(-1000px);
-      opacity: 0;
-    }
-}
 
 /* .container { */
     /* display: flex; */

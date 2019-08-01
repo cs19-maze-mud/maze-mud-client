@@ -1,5 +1,4 @@
-import './game.css'
-
+import './game.css';
 export default () => {
     var ctx = null;
     var bg = null;
@@ -15,6 +14,7 @@ export default () => {
     var skull = null;
     var box = null;
     var banner = null;
+    var sidetorch = null;
 
     var currentDirection = 'stand';
     var animation = [0, 0];
@@ -50,7 +50,6 @@ export default () => {
 
         //DIAGINAL
         this.move = function (key) {
-            console.log( this.keypress )
             if (key.keydown) {
                 this.keypress[key.keydown] = true
             } 
@@ -169,13 +168,13 @@ export default () => {
             //X=Y and Y=X
             let s = 1
             let n = 1
-            let w = 1
-            let e = 1
+            let w = 0
+            let e = 0
 
             //DOOR TO THE EAST
             if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
                 if ( e > 0 ) {
-                    nextRoom( 'east' )
+                    nextRoom( 'east' );
                 } else {
                     console.log( 'locked' )
                 }
@@ -254,6 +253,7 @@ export default () => {
                 createImageBitmap(bg, 113, 113, 13, 13),
                 createImageBitmap(bg, 3, 131, 14, 12),
                 createImageBitmap(bg, 65, 115, 14, 14),
+                createImageBitmap(bg, 16, 146, 6, 14),
             ])
 
                 .then(res => {
@@ -268,6 +268,7 @@ export default () => {
                     skull = res[8]
                     box = res[9]
                     banner = res[10]
+                    sidetorch = res[11]
 
                     function render() {
                         ctx.clearRect(0, 0, 500, 500);
@@ -281,9 +282,6 @@ export default () => {
                         ptrn = ctx.createPattern(top, 'repeat');
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(0, 0, 500, 17);
-
-                        //TOP DOOR  
-                        ctx.drawImage(door, 230, 0, 50, 17);
 
                         //BOTTOM WALL
                         ptrn = ctx.createPattern(bottom, 'repeat');
@@ -300,6 +298,9 @@ export default () => {
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(493, 0, 7, 500);
 
+                        //TOP DOOR  
+                        ctx.drawImage(door, 230, 0, 50, 17);
+
                         //RIGHT DOOR      
                         ctx.drawImage(sideDoor, 490, 230, 10, 50);
 
@@ -312,10 +313,14 @@ export default () => {
                         //CHAIN
                         ctx.drawImage(chain, 290, 480, 20, 17);
                         ctx.drawImage(chain, 200, 480, 20, 17);
+                        ctx.drawImage(chain, 140, 480, 20, 17);
+                        ctx.drawImage(chain, 350, 480, 20, 17);
 
                         //TOP TORCH
                         ctx.drawImage(torch, 350, -5, 20, 17);
                         ctx.drawImage(torch, 145, -5, 20, 17);
+                        ctx.drawImage(sidetorch, 6, 200, 10, 15);
+                        ctx.drawImage(sidetorch, 6, 300, 10, 15);
 
                         //SKULL
                         ctx.drawImage(skull, 470, 15, 20, 17);
@@ -323,6 +328,9 @@ export default () => {
                         //BOX
                         ctx.drawImage(box, 15, 460, 20, 17);
                         ctx.drawImage(box, 34, 470, 20, 17);
+                        ctx.drawImage(box, 434, 450, 20, 17);
+                        ctx.drawImage(box, 460, 460, 20, 17);
+                        ctx.drawImage(box, 460, 430, 20, 17);
 
                         //BANNER
                         ctx.drawImage(banner, 200, -2, 20, 17);
