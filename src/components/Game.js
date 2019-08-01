@@ -46,7 +46,7 @@ const loadHandler = event => {
     return (
         <React.Fragment>
             <canvas ref={mazeCanvasRef} id="room-canvas" width="500" height="500" />
-            <canvas ref={roomCanvasRef} id="maze-canvas" width="500" height="500" />
+            {/* <canvas ref={roomCanvasRef} id="maze-canvas" width="500" height="500" /> */}
             <img onLoad={loadHandler} id="background" src="https://maze-mud-image-server.herokuapp.com/Dungeon_Tileset.png" style={{"display":"none"}} alt="hidden_image"/>
             <img onLoad={loadHandler} id="player" src="https://maze-mud-image-server.herokuapp.com/player.png" style={{"display":"none"}} alt="hidden_image"/>
         </React.Fragment>
