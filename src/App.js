@@ -5,6 +5,8 @@ import Game from "./components/Game";
 import Lobby from './components/Lobby';
 import { NavLink, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
+import Footer from './components/Footer';
+import GameWorker from './components/GameWorker'
 
 class App extends Component {
   constructor(props) {
@@ -121,6 +123,10 @@ class App extends Component {
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
         <Route exact path='/game' component={Game} />
+        <Route exact path='/gamew' render={() => <GameWorker {...this.props} sup={this.sup}/>}/>
+        <div className='footer'>
+          <Footer currentRoom = {this.state.currentRoom}/>
+        </div>
       </div>
     );
   }

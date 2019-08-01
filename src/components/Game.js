@@ -11,6 +11,9 @@ function Game() {
 useEffect(() => {
     if(bitMaps.length === document.images.length){
         const helloWorker = new WebWorker(HelloWorker);
+        helloWorker.onMessage = function( data ) {
+            console.log( 'stuff' )
+        }
         const offscreen = mazeCanvasRef.current.transferControlToOffscreen();
 
         const assetsObj = {canvas: offscreen}
@@ -22,6 +25,7 @@ useEffect(() => {
 
         helloWorker.postMessage(assetsObj, [offscreen, ...assetsArray ]);
         helloWorker.postMessage({token: (localStorage.getItem('token'))});
+        
 
         const keyHandler = function(event){
             helloWorker.postMessage({msg: {[ event.type ]: event.code}});

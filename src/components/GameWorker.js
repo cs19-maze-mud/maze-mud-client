@@ -17,12 +17,13 @@ export default () => {
     var banner = null;
     var sidetorch = null;
     var token = null;
+    var currentRoom = null;
 
     //AVAILABLE DOORS IN CURRENT ROOM
-    var s = -1
+    var s = 1
     var n = 1
-    var  w = -1
-    var  e = -1
+    var w = 1
+    var e = 1
 
     var currentDirection = 'stand';
     var animation = [0, 0];
@@ -173,11 +174,6 @@ export default () => {
                 this.y += y_mov
             }
 
-            //X=Y and Y=X
-            // let s = 1
-            // let n = 1
-            // let w = 0
-            // let e = 0
 
             //DOOR TO THE EAST
             if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
@@ -204,7 +200,6 @@ export default () => {
             if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
                 if ( s > 0 ) {
                     nextRoom( 'south' )
-                    console.log( 'entered' )
                 }
             }
         }
@@ -219,10 +214,17 @@ export default () => {
             },
             body: JSON.stringify({direction})
         })
-          .then(function (data) {
+        .then( res => res.json() )
+        .then(function (data) {
             console.log('Request succeeded with JSON response', data);
+            n = data.n
+            s = data.s
+            e = data.e
+            w = data.w
+            let room = data.title
+            currentRoom = room
         })
-          .catch(function (error) {
+        .catch(function (error) {
             console.log('Request failed', error);
         });
         
@@ -259,7 +261,6 @@ export default () => {
         if (Object.keys(event.data).includes('token')) {
             token = event.data.token;
         }
-
         else if (event.data.msg) {
             player1.move(event.data.msg)
         }
@@ -306,6 +307,7 @@ export default () => {
                         ptrn = ctx.createPattern(bg, 'repeat');
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(0, 0, 500, 500);
+                
 
                         //TOP WALL
                         ptrn = ctx.createPattern(top, 'repeat');
@@ -374,6 +376,13 @@ export default () => {
                         ctx.drawImage(banner, 290, -2, 20, 17);
                         ctx.drawImage(banner, 100, -2, 20, 17);
                         ctx.drawImage(banner, 400, -2, 20, 17);
+
+                        //LOCATION
+                        // if ( currentRoom !== null ) {
+                        //     ctx.font = "25px Arial";
+                        //     ctx.fillStyle = "white";
+                        //     ctx.strokeText(`${currentRoom}`, 10, 40);
+                        // }
 
                         player1.draw()
                         // ctx.drawImage(event.data.player,0,0,17,16,this.x,this.y,17,16)

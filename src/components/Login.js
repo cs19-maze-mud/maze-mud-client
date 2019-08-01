@@ -22,14 +22,17 @@ class Login extends React.Component {
         const token = res.data.key;
         localStorage.setItem('token', token)
         this.props.login()
-        this.props.history.push( '/game' )
+        this.props.history.push( '/lobby' )
       })
       .catch(err => {
         console.log(err.response)
       })
-    this.props.login()
-    this.props.history.push( '/lobby' )
+    
   };
+
+  sup( data ) {
+    console.log( 'from home' , data )
+  }
 
   render() {
     return (
