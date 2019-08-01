@@ -21,10 +21,12 @@ class Register extends React.Component {
                 console.log(res.data);
                 const token = res.data.key;
                 localStorage.setItem('token', token)
+                this.props.login();
+                this.props.history.push( '/game' );
             })
             .catch(err => {
                 console.log(err.response)
-            })
+            })    
     };
 
     render() {
