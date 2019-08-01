@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedin: false
+      loggedin: false,
+      currentRoom: {}
     }
   }
 
@@ -38,7 +39,7 @@ class App extends Component {
   
         }
   
-        <Route exact path='/register' component={Register} />
+        <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render ={ () => <Login {...this.props} login={this.login} /> }/>
         <Route exact path='/game' component={Game} />
         
