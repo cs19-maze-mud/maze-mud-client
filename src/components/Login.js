@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
 
-class Register extends React.Component {
+class Login extends React.Component {
   state = {
     username: '',
     password: '',
@@ -22,11 +21,18 @@ class Register extends React.Component {
         console.log(res.data);
         const token = res.data.key;
         localStorage.setItem('token', token)
+        this.props.login()
+        this.props.history.push( '/lobby' )
       })
       .catch(err => {
         console.log(err.response)
       })
+    
   };
+
+  sup( data ) {
+    console.log( 'from home' , data )
+  }
 
   render() {
     return (
@@ -51,10 +57,9 @@ class Register extends React.Component {
           />
           <button type='submit'>Login Submit</button>
         </form>
-        {/* <Link to='/register'>Register</Link> */}
       </div>
     );
   };
 };
 
-export default Register;
+export default Login;

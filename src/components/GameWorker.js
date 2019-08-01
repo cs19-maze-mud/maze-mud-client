@@ -1,4 +1,4 @@
-import './game.css'
+import './game.css';
 
 export default () => {
     var ctx = null;
@@ -15,6 +15,15 @@ export default () => {
     var skull = null;
     var box = null;
     var banner = null;
+    var sidetorch = null;
+    var token = null;
+    var currentRoom = null;
+
+    //AVAILABLE DOORS IN CURRENT ROOM
+    var s = 1
+    var n = 1
+    var w = 1
+    var e = 1
 
     var currentDirection = 'stand';
     var animation = [0, 0];
@@ -50,7 +59,6 @@ export default () => {
 
         //DIAGINAL
         this.move = function (key) {
-            console.log( this.keypress )
             if (key.keydown) {
                 this.keypress[key.keydown] = true
             } 
@@ -166,18 +174,11 @@ export default () => {
                 this.y += y_mov
             }
 
-            //X=Y and Y=X
-            let s = 1
-            let n = 1
-            let w = 1
-            let e = 1
 
             //DOOR TO THE EAST
             if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
                 if ( e > 0 ) {
-                    nextRoom( 'east' )
-                } else {
-                    console.log( 'locked' )
+                    nextRoom( 'east' );
                 }
             }
 
@@ -185,8 +186,6 @@ export default () => {
             if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
                 if ( w > 0 ) {
                     nextRoom( 'west' )
-                } else {
-                    console.log( 'locked' )
                 }
             }
 
@@ -194,8 +193,6 @@ export default () => {
             if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
                 if ( n > 0 ) {
                     nextRoom( 'north' )
-                } else {
-                    console.log( 'locked' )
                 }
             }
 
@@ -203,11 +200,37 @@ export default () => {
             if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
                 if ( s > 0 ) {
                     nextRoom( 'south' )
-                } else {
-                    console.log( 'locked' )
                 }
             }
         }
+    }
+
+    const handleMove = (direction) => {
+        fetch('https://maze-mud-server.herokuapp.com/api/adv/move/', {
+            method: 'post',
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify({direction})
+        })
+        .then( res => res.json() )
+        .then(function (data) {
+            console.log('Request succeeded with JSON response', data);
+            n = data.n
+            s = data.s
+            e = data.e
+            w = data.w
+            let room = data.title
+            currentRoom = room
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
+        
+        
+        
+        
     }
 
     function nextRoom( direction ) {
@@ -215,13 +238,17 @@ export default () => {
 
         if ( direction === 'south' ) {
             player1.y = 10
+            handleMove('s')
         } else if ( direction === 'north' ) {
             player1.y = 470
+            handleMove('n')
         } else if ( direction === 'west' ) {
             player1.x = 470
             player1.y = 250
+            handleMove('w')
         } else {
             player1.x = 20
+            handleMove('e')
         }
 
         
@@ -231,12 +258,14 @@ export default () => {
 
 
     self.addEventListener('message', event => { // eslint-disable-line no-restricted-globals
-
-        if (event.data.msg) {
+        if (Object.keys(event.data).includes('token')) {
+            token = event.data.token;
+        }
+        else if (event.data.msg) {
             player1.move(event.data.msg)
         }
 
-        if (!event.data.msg) {
+        if (event.data.canvas) {
 
             ctx = event.data.canvas.getContext("2d");
             bg = event.data.background
@@ -254,6 +283,7 @@ export default () => {
                 createImageBitmap(bg, 113, 113, 13, 13),
                 createImageBitmap(bg, 3, 131, 14, 12),
                 createImageBitmap(bg, 65, 115, 14, 14),
+                createImageBitmap(bg, 16, 146, 6, 14),
             ])
 
                 .then(res => {
@@ -268,6 +298,7 @@ export default () => {
                     skull = res[8]
                     box = res[9]
                     banner = res[10]
+                    sidetorch = res[11]
 
                     function render() {
                         ctx.clearRect(0, 0, 500, 500);
@@ -276,14 +307,12 @@ export default () => {
                         ptrn = ctx.createPattern(bg, 'repeat');
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(0, 0, 500, 500);
+                
 
                         //TOP WALL
                         ptrn = ctx.createPattern(top, 'repeat');
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(0, 0, 500, 17);
-
-                        //TOP DOOR  
-                        ctx.drawImage(door, 230, 0, 50, 17);
 
                         //BOTTOM WALL
                         ptrn = ctx.createPattern(bottom, 'repeat');
@@ -300,22 +329,37 @@ export default () => {
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(493, 0, 7, 500);
 
-                        //RIGHT DOOR      
-                        ctx.drawImage(sideDoor, 490, 230, 10, 50);
+                        //TOP DOOR
+                        if ( n !== -1 ) {
+                            ctx.drawImage(door, 230, 0, 50, 17);
+                        }
 
-                        //LEFT DOOR     
-                        ctx.drawImage(sideDoor, -2, 230, 11, 50)
+                        //RIGHT DOOR  
+                        if ( e !== -1 ) {
+                            ctx.drawImage(sideDoor, 490, 230, 10, 50);
+                        }
 
-                        //BOTTOM DOOR       
-                        ctx.drawImage(door, 230, 485, 50, 17);
+                        //LEFT DOOR    
+                        if ( w !== -1 ) {
+                            ctx.drawImage(sideDoor, -2, 230, 11, 50)
+                        }
+
+                        //BOTTOM DOOR 
+                        if ( s !== -1 )    {   
+                            ctx.drawImage(door, 230, 485, 50, 17);
+                        }
 
                         //CHAIN
                         ctx.drawImage(chain, 290, 480, 20, 17);
                         ctx.drawImage(chain, 200, 480, 20, 17);
+                        ctx.drawImage(chain, 140, 480, 20, 17);
+                        ctx.drawImage(chain, 350, 480, 20, 17);
 
                         //TOP TORCH
                         ctx.drawImage(torch, 350, -5, 20, 17);
                         ctx.drawImage(torch, 145, -5, 20, 17);
+                        ctx.drawImage(sidetorch, 6, 200, 10, 15);
+                        ctx.drawImage(sidetorch, 6, 300, 10, 15);
 
                         //SKULL
                         ctx.drawImage(skull, 470, 15, 20, 17);
@@ -323,12 +367,22 @@ export default () => {
                         //BOX
                         ctx.drawImage(box, 15, 460, 20, 17);
                         ctx.drawImage(box, 34, 470, 20, 17);
+                        ctx.drawImage(box, 434, 450, 20, 17);
+                        ctx.drawImage(box, 460, 460, 20, 17);
+                        ctx.drawImage(box, 460, 430, 20, 17);
 
                         //BANNER
                         ctx.drawImage(banner, 200, -2, 20, 17);
                         ctx.drawImage(banner, 290, -2, 20, 17);
                         ctx.drawImage(banner, 100, -2, 20, 17);
                         ctx.drawImage(banner, 400, -2, 20, 17);
+
+                        //LOCATION
+                        // if ( currentRoom !== null ) {
+                        //     ctx.font = "25px Arial";
+                        //     ctx.fillStyle = "white";
+                        //     ctx.strokeText(`${currentRoom}`, 10, 40);
+                        // }
 
                         player1.draw()
                         // ctx.drawImage(event.data.player,0,0,17,16,this.x,this.y,17,16)
