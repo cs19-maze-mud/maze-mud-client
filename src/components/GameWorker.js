@@ -1,4 +1,6 @@
 import './game.css';
+
+
 export default () => {
     var ctx = null;
     var bg = null;
@@ -15,6 +17,12 @@ export default () => {
     var box = null;
     var banner = null;
     var sidetorch = null;
+
+    //AVAILABLE DOORS IN CURRENT ROOM
+    var s = -1
+    var n = 1
+    var  w = -1
+    var  e = -1
 
     var currentDirection = 'stand';
     var animation = [0, 0];
@@ -166,17 +174,15 @@ export default () => {
             }
 
             //X=Y and Y=X
-            let s = 1
-            let n = 1
-            let w = 0
-            let e = 0
+            // let s = 1
+            // let n = 1
+            // let w = 0
+            // let e = 0
 
             //DOOR TO THE EAST
             if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
                 if ( e > 0 ) {
                     nextRoom( 'east' );
-                } else {
-                    console.log( 'locked' )
                 }
             }
 
@@ -184,8 +190,6 @@ export default () => {
             if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
                 if ( w > 0 ) {
                     nextRoom( 'west' )
-                } else {
-                    console.log( 'locked' )
                 }
             }
 
@@ -193,8 +197,6 @@ export default () => {
             if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
                 if ( n > 0 ) {
                     nextRoom( 'north' )
-                } else {
-                    console.log( 'locked' )
                 }
             }
 
@@ -202,8 +204,7 @@ export default () => {
             if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
                 if ( s > 0 ) {
                     nextRoom( 'south' )
-                } else {
-                    console.log( 'locked' )
+                    console.log( 'entered' )
                 }
             }
         }
@@ -298,17 +299,25 @@ export default () => {
                         ctx.fillStyle = ptrn;
                         ctx.fillRect(493, 0, 7, 500);
 
-                        //TOP DOOR  
-                        ctx.drawImage(door, 230, 0, 50, 17);
+                        //TOP DOOR
+                        if ( n !== -1 ) {
+                            ctx.drawImage(door, 230, 0, 50, 17);
+                        }
 
-                        //RIGHT DOOR      
-                        ctx.drawImage(sideDoor, 490, 230, 10, 50);
+                        //RIGHT DOOR  
+                        if ( e !== -1 ) {
+                            ctx.drawImage(sideDoor, 490, 230, 10, 50);
+                        }
 
-                        //LEFT DOOR     
-                        ctx.drawImage(sideDoor, -2, 230, 11, 50)
+                        //LEFT DOOR    
+                        if ( w !== -1 ) {
+                            ctx.drawImage(sideDoor, -2, 230, 11, 50)
+                        }
 
-                        //BOTTOM DOOR       
-                        ctx.drawImage(door, 230, 485, 50, 17);
+                        //BOTTOM DOOR 
+                        if ( s !== -1 )    {   
+                            ctx.drawImage(door, 230, 485, 50, 17);
+                        }
 
                         //CHAIN
                         ctx.drawImage(chain, 290, 480, 20, 17);
