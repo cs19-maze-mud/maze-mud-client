@@ -266,3 +266,8 @@
  
  [hidden] {
    display: none !important; }
+
+canvas#room-canvas {
+  height: auto;
+  width: 50%
+}
