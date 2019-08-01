@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.nav-bar {
+    margin: 20px auto 0;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.nav-bar-items {
+    color: rgb(50, 150, 128);
+    font-family: 'Press Start 2P', cursive;
+}
+
+.logo {
+    width: 700px;
+    border-radius: 10px;
+}

@@ -3,6 +3,8 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Game from "./components/Game"
 import { NavLink , Route , withRouter} from 'react-router-dom';
+import logo from './cave_escape_MUD.png';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -22,21 +24,17 @@ class App extends Component {
   };
 
   render() {
+    const loggedInNav = <nav className="nav-bar">
+      <NavLink onClick={this.logout} className='logout nav-bar-items' to='/' >Logout</NavLink>
+    </nav>
+
+    const loggedOutNav = <nav className="nav-bar">
+      <img className="logo" src={logo} alt="cave maze logo" />
+    </nav>
+
     return (
       <div className="container">
-        { this.state.loggedin ? (
-            <nav>
-              <NavLink onClick={this.logout} className='logout' to='/' >Logout</NavLink>
-              <NavLink to='/game' >Game</NavLink>
-            </nav>
-          ) : (
-            <nav>
-              <NavLink exact to='/register'> Register </NavLink>
-              <NavLink exact to='/'> Login </NavLink>
-            </nav>
-          )
-  
-        }
+        { this.state.loggedin ? loggedInNav : loggedOutNav }
   
         <Route exact path='/register' component={Register} />
         <Route exact path='/' render ={ () => <Login {...this.props} login={this.login} /> }/>

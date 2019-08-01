@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
 class Register extends React.Component {
     state = {
@@ -21,6 +21,7 @@ class Register extends React.Component {
                 console.log(res.data);
                 const token = res.data.key;
                 localStorage.setItem('token', token)
+                this.props.history.push('/game')
             })
             .catch(err => {
                 console.log(err.response)
@@ -29,8 +30,9 @@ class Register extends React.Component {
 
     render() {
         return (
+        <div>
             <div className='RegisterContainer'>
-                <h2>Register Here</h2>
+                <h2>Register</h2>
                 
                 <form onSubmit={this.handleSubmit}>
                     <input 
@@ -56,10 +58,13 @@ class Register extends React.Component {
                         value = {this.state.password2}
                         onChange = {this.handleChange}
                     />
-                    <button type='submit'>Register Account</button>
+                    <button type='submit'>Submit</button>
                 </form>
-                {/* <Link to='/login'>Login</Link> */}
             </div>
+            <div>
+                <NavLink className='nav-bar-items' exact to='/'> Login Here </NavLink>
+            </div>
+        </div>
         );
     };
 };

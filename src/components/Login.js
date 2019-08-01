@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
 class Login extends React.Component {
   state = {
     username: '',
     password: '',
-
   }
 
   handleChange = event => {
@@ -27,33 +26,37 @@ class Login extends React.Component {
         console.log(err.response)
       })
     this.props.login()
-    this.props.history.push( '/game' )
-
+    this.props.history.push('/game')
   };
 
   render() {
     return (
-      <div className='LoginContainer'>
-        <h2>Login Here</h2>
-        
-        <form onSubmit={this.handleSubmit}>
-          <input 
-            type = 'text'
-            name = 'username'
-            placeholder = 'Username'
-            value = {this.state.username}
-            onChange = {this.handleChange}
-          />
+      <div>
+        <div className='LoginContainer'>        
+          <h2>Login</h2>
+          
+          <form onSubmit={this.handleSubmit}>
+            <input
+              type = 'text'
+              name = 'username'
+              placeholder = 'Username'
+              value = {this.state.username}
+              onChange = {this.handleChange}
+            />
 
-          <input 
-            type = 'password'
-            name = 'password'
-            placeholder = 'Password Please'
-            value = {this.state.password}
-            onChange = {this.handleChange}
-          />
-          <button type='submit'>Login Submit</button>
-        </form>
+            <input 
+              type = 'password'
+              name = 'password'
+              placeholder = 'Password Please'
+              value = {this.state.password}
+              onChange = {this.handleChange}
+            />
+            <button type='submit'>Submit</button>
+          </form>
+        </div>
+        <div>
+          <NavLink className='nav-bar-items' exact to='/register'> Register Here </NavLink>
+        </div>
       </div>
     );
   };

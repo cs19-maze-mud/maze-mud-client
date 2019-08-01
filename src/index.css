@@ -25,9 +25,9 @@
    font-size: 1rem;
    font-weight: 400;
    line-height: 1.5;
-   color: #212529;
+   color: #fff;
    text-align: left;
-   background-color: #fff; }
+   background-color: #212529; }
  
  [tabindex="-1"]:focus {
    outline: 0 !important; }
@@ -39,7 +39,10 @@
  
  h1, h2, h3, h4, h5, h6 {
    margin-top: 0;
-   margin-bottom: 0.5rem; }
+   margin-bottom: 0.5rem;
+   color: rgb(50, 150, 128);
+  
+  }
  
  p {
    margin-top: 0;
@@ -275,9 +278,8 @@ div.LoginContainer {
   padding: 12px;
   margin: 0 auto;
   color: white;
-  background-color: rgb(50, 150, 128);
-  border-radius: 10px;
   margin-top: 30px;
+  max-width: 300px;
 }
 
 div.RegisterContainer {
@@ -286,29 +288,56 @@ div.RegisterContainer {
   padding: 10px;
   margin: 0 auto;
   color: white;
-  background-color: rgb(50, 150, 128);
-  border-radius: 10px;
   margin-top: 30px;
+  max-width: 300px;
 }
 
 form input {
   display: flex;
   flex-direction: column;
   margin: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  padding: 10px;
 }
 
 button {
   display: flex;
   justify-content: center;
-  margin: 0 auto;
+  margin: 15px auto;
+  color: white;
+  background: grey;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  outline: none;
+}
+
+button:hover {
+  color: grey;
+  background: white;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
-nav {
+.nav-bar {
+  margin: 20px auto 0;
   display: flex;
-  justify-content: space-evenly
+  flex-direction: column;
+  text-align: center;
+}
+
+.nav-bar-items {
+  color: rgb(50, 150, 128);
+  font-family: 'Press Start 2P', cursive;
+}
+
+.logo {
+  width: 700px;
+  border-radius: 10px;
 }
