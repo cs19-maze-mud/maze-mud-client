@@ -1,12 +1,14 @@
 import React from 'react';
+import Register from './components/Register';
+import Login from './components/Login';
 import Game from "./components/Game"
 
 function App() {
   return (
-    <div className="App">
-      <div className="container">
-        <Game />
-      </div>
+    <div className="container">
+      <Register/>
+      <Login />
+      <Game />
     </div>
   );
 }
