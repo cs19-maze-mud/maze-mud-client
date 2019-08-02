@@ -5,13 +5,16 @@ import "./game.css"
 
 function Game() {
     const mazeCanvasRef = useRef(null);
-    const roomCanvasRef = useRef(null);
     const [bitMaps,setBitMaps] = useState([]);
     const [moveResponse,setMoveResponse] = useState(null);
 
 useEffect(() => {
     if(bitMaps.length === document.images.length){
-        const helloWorker = new WebWorker(HelloWorker);
+
+
+
+        const helloWorker = new Worker("main.worker.js");
+        // const helloWorker = new WebWorker(HelloWorker);
         helloWorker.onmessage = function({data}) {
             setMoveResponse(data)
         }
