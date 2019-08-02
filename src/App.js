@@ -8,7 +8,6 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Game from "./components/Game";
 import Lobby from './components/Lobby';
-import Footer from './components/Footer';
 import GameWorker from './components/GameWorker';
 
 class App extends Component {
@@ -35,8 +34,16 @@ class App extends Component {
   }
 
   logout = () => {
+    const token = localStorage.getItem('token');
     localStorage.removeItem('token');
     this.setState({ loggedIn: false })
+
+    axios
+      .get(`https://maze-mud-server.herokuapp.com/api/adv/end/`, { headers: { Authorization: `Token ${token}` } })
+      .then()
+      .catch(error => {
+        console.log(error.message)
+      })
   };
 
   startGame = () => {
@@ -44,9 +51,13 @@ class App extends Component {
     axios
       .get('https://maze-mud-server.herokuapp.com/api/adv/init/', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
-        console.log(res.data)
         this.setState({
-          startingRoom: {...res.data.current_room, in_progress: res.data.game.in_progress}
+          startingRoom: {
+            ...res.data.current_room,
+            in_progress: res.data.game.in_progress
+          },
+          uuid: res.data.user.uuid,
+          username: res.data.user.uuid
         })
       })
       .catch(error => {
@@ -60,9 +71,14 @@ class App extends Component {
     axios
       .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=3', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
-        console.log(res.data)
+        console.log(res.data.game.num_players)
         this.setState({
-          startingRoom: res.data.current_room
+          startingRoom: res.data.current_room,
+          uuid: res.data.user.uuid,
+          moveResponse: {
+            players: res.data.game.usernames
+          },
+          numPlayers: res.data.game.num_players,
         })
       })
       .catch(error => {
@@ -77,7 +93,12 @@ class App extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          startingRoom: res.data.current_room
+          startingRoom: res.data.current_room,
+          uuid: res.data.user.uuid,
+          moveResponse: {
+            players: res.data.game.usernames
+          },
+          numPlayers: res.data.game.num_players,
         })
       })
       .catch(error => {
@@ -91,22 +112,12 @@ class App extends Component {
       .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=10', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          startingRoom: res.data.current_room
-        })
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
-  }
-
-  joinAFriend = () => {
-    let token = localStorage.getItem('token')
-    axios
-      .get('', { headers: { Authorization: `Token ${token}` } })
-      .then(res => {
-        console.log(res.data)
-        this.setState({
-          startingRoom: res.data.current_room
+          startingRoom: res.data.current_room,
+          uuid: res.data.user.uuid,
+          moveResponse: {
+            players: res.data.game.usernames
+          },
+          numPlayers: res.data.game.num_players,
         })
       })
       .catch(error => {
@@ -115,10 +126,11 @@ class App extends Component {
   }
 
   dumpStartingRoom = () => {
-    this.setState({
-      startingRoom: null,
+    this.setState({startingRoom: null})
+  }
 
-    })
+  incrementNumPlayers = () => {
+    this.setState({numPlayers: this.state.numPlayers + 1})
   }
 
   render() {
@@ -139,10 +151,10 @@ class App extends Component {
       <div className="container">
         { this.state.loggedIn ? loggedInNav : loggedOutNav }
 
-        <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={ this.normalStart } hardStart={ this.hardStart } joinAFriend={ this.joinAFriend } startGame = {this.startGame} />} />
+        <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={ this.normalStart } hardStart={this.hardStart} startGame ={this.startGame} uuid={this.state.uuid} moveResponse={this.state.moveResponse} numPlayers={this.state.numPlayers} incrementNumPlayers={this.incrementNumPlayers}/>} />
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
-        <Route exact path='/game' render={() => <Game {...this.props} startingRoom={this.state.startingRoom} dumpStartingRoom={this.dumpStartingRoom} />} />
+        <Route exact path='/game' render={() => <Game {...this.props} startingRoom={this.state.startingRoom} dumpStartingRoom={this.dumpStartingRoom} uuid={this.state.uuid} username={this.state.username} />} />
         <Route exact path='/gamew' render={() => <GameWorker {...this.props} sup={this.sup}/>}/>
       </div>
     );

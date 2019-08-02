@@ -229,10 +229,6 @@ export default () => {
         .catch(function (error) {
             console.log('Request failed', error);
         });
-        
-        
-        
-        
     }
 
     function nextRoom( direction ) {

@@ -1,7 +1,8 @@
 import React, {useRef, useEffect,useState} from 'react';
-import WebWorker from "./WebWorker"
-import HelloWorker from './GameWorker.js';
-import "./game.css"
+// import WebWorker from "./WebWorker"
+// import HelloWorker from './GameWorker.js';
+import "./game.css";
+import Chat from './Chat';
 
 function Game(props) {
     const mazeCanvasRef = useRef(null);
@@ -9,14 +10,11 @@ function Game(props) {
     const [moveResponse,setMoveResponse] = useState(null);
 
     useEffect(() => {
-        console.log(props.startingRoom)
         setMoveResponse(props.startingRoom)
     },[props.startingRoom])
 
 useEffect(() => {
     if(bitMaps.length === document.images.length){
-
-
 
         const helloWorker = new Worker("main.worker.js");
         // const helloWorker = new WebWorker(HelloWorker);
@@ -61,7 +59,6 @@ if(moveResponse && moveResponse.in_progress) {
     var roomStuff = <div className="room-stuff">
         <h4>{moveResponse.title}</h4>
         {moveResponse.description} <br/>
-        {moveResponse.players.length > 0 && <span>{moveResponse.players.map(p => <span>{p}</span>)}</span>}<br/>
     </div>
 } else if (moveResponse && !moveResponse.in_progress) {
     var message = <div className="room-stuff endgame">{moveResponse.message}</div>
@@ -75,6 +72,7 @@ if(moveResponse && moveResponse.in_progress) {
             <img onLoad={loadHandler} id="player" src="https://maze-mud-image-server.herokuapp.com/player.png" style={{"display":"none"}} alt="hidden_image"/>
             {roomStuff}
             {message}
+            <Chat {...props} uuid={props.uuid} moveResponse={moveResponse} />
         </div>
     );
 }

@@ -1,10 +1,14 @@
 import React from 'react';
 import './Lobby.css'
 import logo from '../cave_escape_MUD.png';
+import Chat from './Chat';
 
 class Lobby extends React.Component {
-    state = {
-        difficultyChosen: false
+    constructor(props) {
+        super(props)
+        this.state = {
+            difficultyChosen: false
+        }
     }
     render() {
 
@@ -21,9 +25,13 @@ class Lobby extends React.Component {
                     <button onClick={this.props.hardStart}>Hard</button>
                 </div>
                 {this.state.difficultyChosen
-                    ? <div className='start-game'>
+                    ? <div>
+                        <div className='start-game'>
+                            {this.props.numPlayers} Players In Lobby<br/>
                             <button onClick={this.props.startGame}>Start Game</button>
                         </div>
+                        <Chat {...this.props} uuid={this.props.uuid} moveResponse={this.props.moveResponse} incrementNumPlayers={this.props.incrementNumPlayers} startGame={this.props.startGame}/>
+                    </div>
                     : null}
             </div>
         );

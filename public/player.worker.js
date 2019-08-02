@@ -139,7 +139,7 @@ function Player(image) {
 
     //PLAYER IMAGE
     this.draw = function () {
-        ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 17, 16 )
+        ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 40, 39 )
     }
 
     this.collision = function (x_mov, y_mov) {
@@ -155,28 +155,28 @@ function Player(image) {
 
         //DOOR TO THE EAST
         if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
-            if ( e > 0 ) {
+            if ( e >= 0 ) {
                 nextRoom( 'east' );
             }
         }
 
         //DOOR TO WEST
         if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
-            if ( w > 0 ) {
+            if ( w >= 0 ) {
                 nextRoom( 'west' )
             }
         }
 
         //DOOR TO NORTH
         if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
-            if ( n > 0 ) {
+            if ( n >= 0 ) {
                 nextRoom( 'north' )
             }
         }
 
         //DOOR TO SOUTH
         if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
-            if ( s > 0 ) {
+            if ( s >= 0 ) {
                 nextRoom( 'south' )
             }
         }
