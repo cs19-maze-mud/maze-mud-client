@@ -16,8 +16,10 @@ export default () => {
     var box = null;
     var banner = null;
     var sidetorch = null;
+    var treasure = null;
     var token = null;
     var currentRoom = null;
+    var inProgress = null;
 
     //AVAILABLE DOORS IN CURRENT ROOM
     var s = 1
@@ -221,6 +223,7 @@ export default () => {
             s = data.s
             e = data.e
             w = data.w
+            inProgress = data.in_progress
             let room = data.title
             currentRoom = room
         })
@@ -284,6 +287,7 @@ export default () => {
                 createImageBitmap(bg, 3, 131, 14, 12),
                 createImageBitmap(bg, 65, 115, 14, 14),
                 createImageBitmap(bg, 16, 146, 6, 14),
+                createImageBitmap(bg, 65, 130, 15, 13),
             ])
 
                 .then(res => {
@@ -299,6 +303,7 @@ export default () => {
                     box = res[9]
                     banner = res[10]
                     sidetorch = res[11]
+                    treasure = res[12]
 
                     function render() {
                         ctx.clearRect(0, 0, 500, 500);
@@ -349,6 +354,14 @@ export default () => {
                             ctx.drawImage(door, 230, 485, 50, 17);
                         }
 
+                        //TREASURE
+                        if ( inProgress === false ) {
+                            ctx.drawImage(treasure, 270, 270, 20, 17);
+                            ctx.drawImage(treasure, 270, 230, 20, 17);
+                            ctx.drawImage(treasure, 230, 230, 20, 17);
+                            ctx.drawImage(treasure, 230, 270, 20, 17);
+                        }
+
                         //CHAIN
                         ctx.drawImage(chain, 290, 480, 20, 17);
                         ctx.drawImage(chain, 200, 480, 20, 17);
@@ -383,6 +396,8 @@ export default () => {
                         //     ctx.fillStyle = "white";
                         //     ctx.strokeText(`${currentRoom}`, 10, 40);
                         // }
+
+
 
                         player1.draw()
                         // ctx.drawImage(event.data.player,0,0,17,16,this.x,this.y,17,16)

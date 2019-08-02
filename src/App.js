@@ -124,9 +124,9 @@ class App extends Component {
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
         <Route exact path='/game' component={Game} />
         <Route exact path='/gamew' render={() => <GameWorker {...this.props} sup={this.sup}/>}/>
-        <div className='footer'>
+        {/* <div className='footer'>
           <Footer currentRoom = {this.state.currentRoom}/>
-        </div>
+        </div> */}
       </div>
     );
   }

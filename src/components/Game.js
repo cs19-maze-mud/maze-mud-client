@@ -14,6 +14,7 @@ useEffect(() => {
         helloWorker.onMessage = function( data ) {
             console.log( 'stuff' )
         }
+        
         const offscreen = mazeCanvasRef.current.transferControlToOffscreen();
 
         const assetsObj = {canvas: offscreen}

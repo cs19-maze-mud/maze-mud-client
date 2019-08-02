@@ -21,7 +21,7 @@ class Register extends React.Component {
                 const token = res.data.key;
                 localStorage.setItem('token', token)
                 this.props.login();
-                this.props.history.push( '/game' );
+                this.props.history.push( '/lobby' );
             })
             .catch(err => {
                 console.log(err.response)
