@@ -16,8 +16,8 @@ export default function Chat(props) {
 
     useEffect(() => {
         if(props.uuid) {
-            const pusher = new Pusher('0c78452f274abb4b90c5', {
-                cluster: 'us3',
+            const pusher = new Pusher(process.env.PUSHER_APP_KEY, {
+                cluster: process.env.PUSHER_CLUSTER,
                 encrypted: true
             });
             const channel = pusher.subscribe(`p-channel-${props.uuid}`);
