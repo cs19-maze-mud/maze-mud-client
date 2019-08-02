@@ -163,7 +163,7 @@ export default () => {
 
         //PLAYER IMAGE
         this.draw = function () {
-            ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 17, 16 )
+            ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 40, 39 )
         }
 
         this.collision = function (x_mov, y_mov) {

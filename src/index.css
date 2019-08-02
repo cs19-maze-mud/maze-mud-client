@@ -42,6 +42,7 @@
    margin-bottom: 0.5rem;
    color: rgb(50, 150, 128);
    font-family: 'Press Start 2P', cursive;
+   text-shadow: 1px 1px whitesmoke;
   }
  
  p {
@@ -306,15 +307,23 @@ button {
   margin: 15px auto;
   color: white;
   background: grey;
-  border: none;
   border-radius: 5px;
   padding: 15px;
   outline: none;
+  margin: 20px;
+  position: relative;
+  box-shadow: 0 6.5px rgb(50, 150, 128);
+  border: 2.5px solid #258b75;
+  letter-spacing: 1.25px;
+  font-family: 'Press Start 2P', cursive;
 }
-
 button:hover {
-  color: grey;
-  background: white;
+  top: 3px;
+  box-shadow: 0 5px rgb(50, 150, 128);
+}
+button:active {
+  top: 5px;
+  box-shadow: 0 3px rgb(50, 150, 128);
 }
 
 .container {
@@ -332,9 +341,10 @@ button:hover {
 }
 
 .nav-bar-items {
-  color: rgb(50, 150, 128);
+  color: whitesmoke;
   font-family: 'Press Start 2P', cursive;
   margin: 0 15px;
+  text-shadow: 2px 2px 2px rgb(50, 150, 128);
 }
 
 .title {
