@@ -1,5 +1,20 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-restricted-globals */
+self.importScripts("player.worker.js")
 
-export default () => {
+
+// self.postMessage({ message: 'Hello' });
+
+// self.addEventListener('message', event => {
+//     Game()
+//     self.postMessage({ status: 'Worker started' });
+// })
+
+
+
+
+
+// export default () => {
     var ctx = null;
     var bg = null;
     var top = null
@@ -15,10 +30,8 @@ export default () => {
     var box = null;
     var banner = null;
     var sidetorch = null;
-    var treasure = null;
     var token = null;
     var currentRoom = null;
-    var inProgress = null;
 
     //AVAILABLE DOORS IN CURRENT ROOM
     var s = 1
@@ -29,184 +42,7 @@ export default () => {
     var currentDirection = 'stand';
     var animation = [0, 0];
 
-    function Player(image) {
-        this.x = 250
-        this.y = 250
-        this.image = image
-        this.keypress = {}
-        this.update = function ( ) {
 
-            if (this.keypress["KeyW"] || this.keypress["ArrowUp"]) {
-                this.collision(0, -10)
-                changeDirections( 'up' )
-            }
-
-            if (this.keypress["KeyS"] || this.keypress["ArrowDown"]) {
-                this.collision(0, 10)
-                changeDirections( 'down' )
-            }
-
-            if (this.keypress["KeyD"] || this.keypress["ArrowRight"]) {
-                this.collision(10, 0)
-                changeDirections( 'right' )
-            }
-
-            if (this.keypress["KeyA"] || this.keypress["ArrowLeft"]) {
-                this.collision(-10, 0)
-                changeDirections( 'left' )
-            }
-
-        }
-
-        //DIAGINAL
-        this.move = function (key) {
-            if (key.keydown) {
-                this.keypress[key.keydown] = true
-            } 
-
-            if (key.keyup) {
-                delete this.keypress[key.keyup]
-            }
-
-            this.update( )
-
-        }
-
-        function changeDirections( direction ) {
-
-            switch( direction ) {
-
-                //MOVE SOUTH
-                case 'down':
-                    if ( currentDirection === 'stand' ) {
-                        currentDirection = 'down-1'
-                        animation = [17, 0]
-
-                    } else if ( currentDirection === 'down-1' ) {
-                        currentDirection = 'down-2'
-                        animation = [34, 0]
-
-                    }  else if ( currentDirection === 'down-2') {
-                        currentDirection = 'down-1'
-                        animation = [17, 0]
-
-                    } else {
-                        currentDirection = 'stand'
-                        animation = [0, 0]
-                    }
-                    break;
-
-                //MOVE NORTH
-                case 'up':
-                    if ( currentDirection === 'stand' ) {
-                        currentDirection = 'up-1'
-                        animation = [125, 0]
-
-                    } else if ( currentDirection === 'up-1' ) {
-                        currentDirection = 'up-2'
-                        animation = [142, 0]
-
-                    }  else if ( currentDirection === 'up-2' ) {
-                        currentDirection = 'up-1'
-                        animation = [125, 0]
-
-                    } else {
-                        currentDirection = 'stand'
-                        animation = [0, 0]
-
-                    }
-                    break;
-
-                //MOVE WEST
-                case 'left':
-                    if ( currentDirection === 'stand' ) {
-                        currentDirection = 'left-1'
-                        animation = [69, 0]
-
-                    } else if ( currentDirection === 'left-1' ) {
-                        currentDirection = 'left-2'
-                        animation = [87, 0]
-
-                    } else if ( currentDirection === 'left-2' ) {
-                        currentDirection = 'left-1'
-                        animation = [69, 0]
-
-                    } else {
-                        currentDirection = 'stand'
-                        animation = [0, 0]
-                    }
-                    break;
-
-                //MOVE EAST
-                case 'right':
-                    if ( currentDirection === 'stand' ) {
-                        currentDirection = 'right-1'
-                        animation = [160, 0]
-
-                    } else if ( currentDirection === 'right-1' ) {
-                        currentDirection = 'right-2'
-                        animation = [178, 0]
-
-                    }  else if ( currentDirection === 'right-2') {
-                        currentDirection = 'right-1'
-                        animation = [160, 0]
-
-                    } else {
-                        currentDirection = 'stand'
-                        animation = [0, 0]
-
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        //PLAYER IMAGE
-        this.draw = function () {
-            ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 17, 16 )
-        }
-
-        this.collision = function (x_mov, y_mov) {
-
-            if (this.x + x_mov <= 470 && this.x + x_mov >= 20) {
-                this.x += x_mov
-            }
-
-            if (this.y + y_mov <= 470 && this.y + y_mov >= 20) {
-                this.y += y_mov
-            }
-
-
-            //DOOR TO THE EAST
-            if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
-                if ( e > 0 ) {
-                    nextRoom( 'east' );
-                }
-            }
-
-            //DOOR TO WEST
-            if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
-                if ( w > 0 ) {
-                    nextRoom( 'west' )
-                }
-            }
-
-            //DOOR TO NORTH
-            if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
-                if ( n > 0 ) {
-                    nextRoom( 'north' )
-                }
-            }
-
-            //DOOR TO SOUTH
-            if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
-                if ( s > 0 ) {
-                    nextRoom( 'south' )
-                }
-            }
-        }
-    }
 
     const handleMove = (direction) => {
         fetch('https://maze-mud-server.herokuapp.com/api/adv/move/', {
@@ -224,7 +60,6 @@ export default () => {
             s = data.s
             e = data.e
             w = data.w
-            inProgress = data.in_progress
             let room = data.title
             currentRoom = room
             postMessage(data)
@@ -289,7 +124,6 @@ export default () => {
                 createImageBitmap(bg, 3, 131, 14, 12),
                 createImageBitmap(bg, 65, 115, 14, 14),
                 createImageBitmap(bg, 16, 146, 6, 14),
-                createImageBitmap(bg, 65, 130, 15, 13),
             ])
 
                 .then(res => {
@@ -305,7 +139,6 @@ export default () => {
                     box = res[9]
                     banner = res[10]
                     sidetorch = res[11]
-                    treasure = res[12]
 
                     function render() {
                         ctx.clearRect(0, 0, 500, 500);
@@ -356,14 +189,6 @@ export default () => {
                             ctx.drawImage(door, 230, 485, 50, 17);
                         }
 
-                        //TREASURE
-                        if ( inProgress === false ) {
-                            ctx.drawImage(treasure, 270, 270, 20, 17);
-                            ctx.drawImage(treasure, 270, 230, 20, 17);
-                            ctx.drawImage(treasure, 230, 230, 20, 17);
-                            ctx.drawImage(treasure, 230, 270, 20, 17);
-                        }
-
                         //CHAIN
                         ctx.drawImage(chain, 290, 480, 20, 17);
                         ctx.drawImage(chain, 200, 480, 20, 17);
@@ -399,8 +224,6 @@ export default () => {
                         //     ctx.strokeText(`${currentRoom}`, 10, 40);
                         // }
 
-
-
                         player1.draw()
                         // ctx.drawImage(event.data.player,0,0,17,16,this.x,this.y,17,16)
 
@@ -419,4 +242,4 @@ export default () => {
     })
 
 
-};
+// };

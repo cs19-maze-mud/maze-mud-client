@@ -11,11 +11,11 @@
     "serve": "^11.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild":"serve build"
+    "dev": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
