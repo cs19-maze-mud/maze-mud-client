@@ -156,6 +156,8 @@ export default () => {
 
                     }
                     break;
+                default:
+                    break;
             }
         }
 
@@ -223,6 +225,7 @@ export default () => {
             w = data.w
             let room = data.title
             currentRoom = room
+            postMessage(data)
         })
         .catch(function (error) {
             console.log('Request failed', error);

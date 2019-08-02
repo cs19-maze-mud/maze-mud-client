@@ -1,32 +1,33 @@
 import React from 'react';
-import './game.css'
+import './Lobby.css'
+import logo from '../cave_escape_MUD.png';
 
 class Lobby extends React.Component {
-
+    state = {
+        difficultyChosen: false
+    }
     render() {
-        
+
         return (
             <div className='Lobby'>
+                <img className="logo" src={logo} alt="cave maze logo" />
                 <h1>Start New Game</h1>
                 <h3>Select Difficulty</h3>
-                <div>
-                    <button onClick={ this.props.easyStart }>Easy</button>
-                    <button onClick={ this.props.normalStart }>Normal</button>
-                    <button onClick={ this.props.hardStart }>Hard</button>
-                    <button onClick={ this.props.startGame}>Start Game</button>
+                <div
+                    className='difficulty'
+                    onClick={() => this.setState({difficultyChosen: true})}>
+                    <button onClick={this.props.easyStart}>Easy</button>
+                    <button onClick={this.props.normalStart}>Normal</button>
+                    <button onClick={this.props.hardStart}>Hard</button>
                 </div>
-
-                <div>
-                    <h1>Join a Game</h1>
-                    <input
-                        placeholder = 'Game Id #'    
-                    ></input>
-                    <button onClick={ this.props.joinAFriend }>Join an existing game</button>
-                </div>
+                {this.state.difficultyChosen
+                    ? <div className='start-game'>
+                            <button onClick={this.props.startGame}>Start Game</button>
+                        </div>
+                    : null}
             </div>
         );
     }
 }
-
 
 export default Lobby;
