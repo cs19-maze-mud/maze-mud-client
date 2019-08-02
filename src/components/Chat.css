@@ -1,0 +1,31 @@
+.chat-form {
+    margin: 0 auto;
+}
+
+#message {
+  height: 45px;
+  margin: 10px 0;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  border: none;
+  padding: 10px;
+}
+
+#type {
+    margin: 0;
+    border-radius: 0 5px 5px 0;
+    outline: none;
+    padding: 10px;
+    background: white;
+  }
+
+.chat-box {
+    color: rgb(34, 34, 34);
+    margin: 15px auto 0;
+    width: 325px;
+    height: 150px;
+    overflow-y: auto;
+    line-height: 1.35;
+    background-image: repeating-linear-gradient( to bottom, #eadbb4 0, #eadbb4 20px, lightBlue 20px, lightBlue 22px, #eadbb4 22px ); 
+    border-radius: 5px;
+}

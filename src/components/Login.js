@@ -40,7 +40,7 @@ class Login extends React.Component {
         <div className='LoginContainer'>        
           <h2>Login</h2>
           
-          <form onSubmit={this.handleSubmit}>
+          <form className="account" onSubmit={this.handleSubmit}>
             <input
               type = 'text'
               name = 'username'

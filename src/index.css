@@ -293,7 +293,7 @@ div.RegisterContainer {
   max-width: 300px;
 }
 
-form input {
+.account input {
   display: flex;
   flex-direction: column;
   margin: 10px;

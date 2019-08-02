@@ -35,7 +35,7 @@ class Register extends React.Component {
             <div className='RegisterContainer'>
                 <h2>Register</h2>
                 
-                <form onSubmit={this.handleSubmit}>
+                <form className="account" onSubmit={this.handleSubmit}>
                     <input 
                         type = 'text'
                         name = 'username'
