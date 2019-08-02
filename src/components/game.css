@@ -1,6 +1,45 @@
 canvas#room-canvas {
     border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 1px white;
     height: auto;
-    width: 50%;
-    margin: 0 auto
+    width: 35%;
+    margin: 10px auto
+}
+
+.room-stuff {
+    margin-top: 20px;
+}
+
+.room-stuff.endgame {
+    animation: disco 500ms infinite;
+    width: 40%;
+    margin: 20px auto;
+}
+@keyframes disco {
+0% {  color: rgb(248, 47, 47);
+        -webkit-text-fill-color: transparent;
+        background: rgb(248, 47, 47);
+         -webkit-background-clip: text;
+    }
+20% {  color: white;
+    -webkit-text-fill-color: transparent;
+    background: white;
+        -webkit-background-clip: text;
+    }
+40% { color: rgb(228, 21, 228);
+    -webkit-text-fill-color: transparent;
+        background: rgb(228, 21, 228);
+        -webkit-background-clip: text;
+        }
+60% { color: rgb(26, 214, 26);
+    -webkit-text-fill-color: transparent;
+        background: rgb(26, 214, 26);
+        -webkit-background-clip: text;
+        }
+100% { color: rgb(47, 47, 250);
+    -webkit-text-fill-color: transparent;
+        background: rgb(47, 47, 250);
+        -webkit-background-clip: text;
+        }
 }

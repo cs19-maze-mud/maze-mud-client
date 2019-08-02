@@ -16,7 +16,7 @@ class App extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      currentRoom: {}
+      startingRoom: {}
     }
   }
 
@@ -46,7 +46,7 @@ class App extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          currentRoom: res.data.current_room
+          startingRoom: {...res.data.current_room, in_progress: res.data.game.in_progress}
         })
       })
       .catch(error => {
@@ -62,7 +62,7 @@ class App extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          currentRoom: res.data.current_room
+          startingRoom: res.data.current_room
         })
       })
       .catch(error => {
@@ -77,7 +77,7 @@ class App extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          currentRoom: res.data.current_room
+          startingRoom: res.data.current_room
         })
       })
       .catch(error => {
@@ -91,7 +91,7 @@ class App extends Component {
       .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=10', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          currentRoom: res.data.current_room
+          startingRoom: res.data.current_room
         })
       })
       .catch(error => {
@@ -106,12 +106,19 @@ class App extends Component {
       .then(res => {
         console.log(res.data)
         this.setState({
-          currentRoom: res.data.current_room
+          startingRoom: res.data.current_room
         })
       })
       .catch(error => {
         console.log(error.message)
       })
+  }
+
+  dumpStartingRoom = () => {
+    this.setState({
+      startingRoom: null,
+
+    })
   }
 
   render() {
@@ -135,7 +142,7 @@ class App extends Component {
         <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={ this.normalStart } hardStart={ this.hardStart } joinAFriend={ this.joinAFriend } startGame = {this.startGame} />} />
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
-        <Route exact path='/game' component={Game} />
+        <Route exact path='/game' render={() => <Game {...this.props} startingRoom={this.state.startingRoom} dumpStartingRoom={this.dumpStartingRoom} />} />
         <Route exact path='/gamew' render={() => <GameWorker {...this.props} sup={this.sup}/>}/>
       </div>
     );

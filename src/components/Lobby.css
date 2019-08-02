@@ -4,4 +4,15 @@
 
 .Lobby button {
     margin: 20px;
+    position: relative;
+    box-shadow: 0 6.5px rgb(50, 150, 128);
+    border: 2.5px solid #258b75;
+}
+.Lobby button:hover {
+    top: 3px;
+    box-shadow: 0 5px rgb(50, 150, 128);
+}
+.Lobby button:active {
+    top: 5px;
+    box-shadow: 0 3px rgb(50, 150, 128);
 }

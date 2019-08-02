@@ -3,10 +3,15 @@ import WebWorker from "./WebWorker"
 import HelloWorker from './GameWorker.js';
 import "./game.css"
 
-function Game() {
+function Game(props) {
     const mazeCanvasRef = useRef(null);
     const [bitMaps,setBitMaps] = useState([]);
     const [moveResponse,setMoveResponse] = useState(null);
+
+    useEffect(() => {
+        console.log(props.startingRoom)
+        setMoveResponse(props.startingRoom)
+    },[props.startingRoom])
 
 useEffect(() => {
     if(bitMaps.length === document.images.length){
@@ -54,13 +59,12 @@ const loadHandler = event => {
 
 if(moveResponse && moveResponse.in_progress) {
     var roomStuff = <div className="room-stuff">
-        <h4>Room Stuff:</h4>
-        <strong>Room:</strong> {moveResponse.title} <br/>
-        <strong>Description:</strong> {moveResponse.description} <br/>
-        <strong>Players In Room:</strong> {moveResponse.players.length > 0 ? moveResponse.players.map(p => <span>{p}</span>) : "None"} <br/>
+        <h4>{moveResponse.title}</h4>
+        {moveResponse.description} <br/>
+        {moveResponse.players.length > 0 && <span>{moveResponse.players.map(p => <span>{p}</span>)}</span>}<br/>
     </div>
 } else if (moveResponse && !moveResponse.in_progress) {
-    var message = <div className="room-stuff">{moveResponse.message}</div>
+    var message = <div className="room-stuff endgame">{moveResponse.message}</div>
 }
 
     return (
