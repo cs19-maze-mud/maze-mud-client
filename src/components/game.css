@@ -1,16 +1,6 @@
-
-
 canvas#room-canvas {
     border: 1px solid black;
     height: auto;
-    width: 60%;
+    width: 50%;
     margin: 0 auto
 }
-
-
-/* .container { */
-    /* display: flex; */
-    /* flex-direction: column;
-    justify-content: center;
-    align-content: center; */
-/* } */

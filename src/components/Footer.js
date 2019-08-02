@@ -1,9 +1,10 @@
 import React from 'react';
 
-function Footer() {
+function Footer(props) {
+  // console.log( props.currentRoom )
   return (
     <div>
-
+      <h1>{props.currentRoom.title}</h1>
     </div>
   );
 }

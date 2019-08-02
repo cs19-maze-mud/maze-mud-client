@@ -6,11 +6,15 @@ import "./game.css"
 function Game() {
     const mazeCanvasRef = useRef(null);
     const roomCanvasRef = useRef(null);
-    const [bitMaps,setBitMaps] = useState([])
+    const [bitMaps,setBitMaps] = useState([]);
+    const [moveResponse,setMoveResponse] = useState(null);
 
 useEffect(() => {
     if(bitMaps.length === document.images.length){
         const helloWorker = new WebWorker(HelloWorker);
+        helloWorker.onmessage = function({data}) {
+            setMoveResponse(data)
+        }
         const offscreen = mazeCanvasRef.current.transferControlToOffscreen();
 
         const assetsObj = {canvas: offscreen}
@@ -21,6 +25,8 @@ useEffect(() => {
 
 
         helloWorker.postMessage(assetsObj, [offscreen, ...assetsArray ]);
+        helloWorker.postMessage({token: (localStorage.getItem('token'))});
+        
 
         const keyHandler = function(event){
             helloWorker.postMessage({msg: {[ event.type ]: event.code}});
@@ -43,13 +49,26 @@ const loadHandler = event => {
     .catch(err => console.log(err))
 }
 
+if(moveResponse && moveResponse.in_progress) {
+    var roomStuff = <div className="room-stuff">
+        <h4>Room Stuff:</h4>
+        <strong>Room:</strong> {moveResponse.title} <br/>
+        <strong>Description:</strong> {moveResponse.description} <br/>
+        <strong>Players In Room:</strong> {moveResponse.players.length > 0 ? moveResponse.players.map(p => <span>{p}</span>) : "None"} <br/>
+    </div>
+} else if (moveResponse && !moveResponse.in_progress) {
+    var message = <div className="room-stuff">{moveResponse.message}</div>
+}
+
     return (
-        <React.Fragment>
+        <div>
             <canvas ref={mazeCanvasRef} id="room-canvas" width="500" height="500" />
             {/* <canvas ref={roomCanvasRef} id="maze-canvas" width="500" height="500" /> */}
             <img onLoad={loadHandler} id="background" src="https://maze-mud-image-server.herokuapp.com/Dungeon_Tileset.png" style={{"display":"none"}} alt="hidden_image"/>
             <img onLoad={loadHandler} id="player" src="https://maze-mud-image-server.herokuapp.com/player.png" style={{"display":"none"}} alt="hidden_image"/>
-        </React.Fragment>
+            {roomStuff}
+            {message}
+        </div>
     );
 }
 

@@ -27,7 +27,7 @@
    line-height: 1.5;
    color: #fff;
    text-align: left;
-   background-color: #212529; }
+   background-color: rgb(27, 25, 25); }
  
  [tabindex="-1"]:focus {
    outline: 0 !important; }
@@ -41,7 +41,7 @@
    margin-top: 0;
    margin-bottom: 0.5rem;
    color: rgb(50, 150, 128);
-  
+   font-family: 'Press Start 2P', cursive;
   }
  
  p {
@@ -303,8 +303,6 @@ form input {
 }
 
 button {
-  display: flex;
-  justify-content: center;
   margin: 15px auto;
   color: white;
   background: grey;
@@ -326,18 +324,29 @@ button:hover {
 }
 
 .nav-bar {
-  margin: 20px auto 0;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 0;
   text-align: center;
 }
 
 .nav-bar-items {
   color: rgb(50, 150, 128);
   font-family: 'Press Start 2P', cursive;
+  margin: 0 15px;
+}
+
+.title {
+  margin-right: 15px;
 }
 
 .logo {
   width: 700px;
   border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.room-stuff {
+  font-size: 1.5rem;
 }
