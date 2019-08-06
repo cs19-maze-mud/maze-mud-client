@@ -10,10 +10,6 @@ self.importScripts("player.worker.js")
 //     self.postMessage({ status: 'Worker started' });
 // })
 
-
-
-
-
 // export default () => {
     var ctx = null;
     var bg = null;
@@ -55,7 +51,6 @@ self.importScripts("player.worker.js")
         })
         .then( res => res.json() )
         .then(function (data) {
-            console.log('Request succeeded with JSON response', data);
             n = data.n
             s = data.s
             e = data.e
@@ -74,8 +69,6 @@ self.importScripts("player.worker.js")
     }
 
     function nextRoom( direction ) {
-        console.log( direction , 'room' )
-
         if ( direction === 'south' ) {
             player1.y = 10
             handleMove('s')
@@ -100,6 +93,12 @@ self.importScripts("player.worker.js")
     self.addEventListener('message', event => { // eslint-disable-line no-restricted-globals
         if (Object.keys(event.data).includes('token')) {
             token = event.data.token;
+
+            const startingRoom = event.data.startingRoom;
+            n = startingRoom.n
+            s = startingRoom.s
+            e = startingRoom.e
+            w = startingRoom.w
         }
         else if (event.data.msg) {
             player1.move(event.data.msg)

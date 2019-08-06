@@ -1,6 +1,5 @@
 import React from 'react';
 import './Lobby.css'
-import logo from '../cave_escape_MUD.png';
 import Chat from './Chat';
 
 class Lobby extends React.Component {
@@ -14,13 +13,13 @@ class Lobby extends React.Component {
 
         return (
             <div className='Lobby'>
-                <img className="logo" src={logo} alt="cave maze logo" />
+                <img className="logo" src="cave_escape_MUD.png" alt="cave maze logo" />
                 <h1>Start New Game</h1>
                 <h3>Select Difficulty</h3>
                 <div
                     className='difficulty'
                     onClick={() => this.setState({difficultyChosen: true})}>
-                    <button onClick={this.props.easyStart}>Easy</button>
+                    <button className="" onClick={this.props.easyStart}>Easy</button>
                     <button onClick={this.props.normalStart}>Normal</button>
                     <button onClick={this.props.hardStart}>Hard</button>
                 </div>

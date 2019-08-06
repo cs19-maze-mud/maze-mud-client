@@ -18,7 +18,6 @@ class Login extends React.Component {
     axios
       .post(`${heroku}/api/login/`, this.state)
       .then(res => {
-        console.log(res.data);
         const token = res.data.key;
         localStorage.setItem('token', token)
         this.props.login()
