@@ -9,7 +9,6 @@ export default function Chat(props) {
     const [type,setType] = useState('Shout');
 
     useEffect(() => {
-        console.log('hook triggered',msg)
         const newChat = [...chat, msg]
         setChat(newChat);
     },[msg])

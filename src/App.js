@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { NavLink , Route , withRouter} from 'react-router-dom';
 import axios from 'axios';
-import logo from './cave_escape_MUD.png';
 import './App.css';
 
 import Register from './components/Register';
 import Login from './components/Login';
 import Game from "./components/Game";
 import Lobby from './components/Lobby';
-import GameWorker from './components/GameWorker';
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +18,6 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-
     if (localStorage.getItem('token') !== null) {
       this.setState({
         loggedIn: true
@@ -71,7 +68,6 @@ class App extends Component {
     axios
       .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=3', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
-        console.log(res.data.game.num_players)
         this.setState({
           startingRoom: res.data.current_room,
           uuid: res.data.user.uuid,
@@ -91,7 +87,6 @@ class App extends Component {
     axios
       .get('https://maze-mud-server.herokuapp.com/api/adv/join/', { headers: { Authorization: `Token ${token}` } })
       .then(res => {
-        console.log(res.data)
         this.setState({
           startingRoom: res.data.current_room,
           uuid: res.data.user.uuid,
@@ -143,7 +138,7 @@ class App extends Component {
     const loggedOutNav = <div>
       <h2 className="title">Cave Escape MUD</h2>
       <nav className="nav-bar">
-        <img className="logo" src={logo} alt="cave maze logo" />
+        <img className="logo" src="cave_escape_MUD.png" alt="cave maze logo" />
       </nav>
     </div>
 
@@ -155,7 +150,6 @@ class App extends Component {
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
         <Route exact path='/game' render={() => <Game {...this.props} startingRoom={this.state.startingRoom} dumpStartingRoom={this.dumpStartingRoom} uuid={this.state.uuid} username={this.state.username} />} />
-        <Route exact path='/gamew' render={() => <GameWorker {...this.props} sup={this.sup}/>}/>
       </div>
     );
   }

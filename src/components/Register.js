@@ -18,7 +18,6 @@ class Register extends React.Component {
         axios
             .post('https://maze-mud-server.herokuapp.com/api/registration/', this.state)
             .then(res => {
-                console.log(res.data);
                 const token = res.data.key;
                 localStorage.setItem('token', token)
                 this.props.login();
