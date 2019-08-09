@@ -36,7 +36,7 @@ class App extends Component {
     this.setState({ loggedIn: false })
 
     axios
-      .get(`https://maze-mud-server.herokuapp.com/api/adv/end/`, { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/end/`, { headers: { Authorization: `Token ${token}` } })
       .then()
       .catch(error => {
         console.log(error.message)
@@ -46,7 +46,7 @@ class App extends Component {
   startGame = () => {
     let token = localStorage.getItem('token')
     axios
-      .get('https://maze-mud-server.herokuapp.com/api/adv/init/', { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/init/`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
           startingRoom: {
@@ -66,7 +66,7 @@ class App extends Component {
   easyStart = () => {
     let token = localStorage.getItem('token')
     axios
-      .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=3', { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=3`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
           startingRoom: res.data.current_room,
@@ -85,7 +85,7 @@ class App extends Component {
   normalStart = () => {
     let token = localStorage.getItem('token')
     axios
-      .get('https://maze-mud-server.herokuapp.com/api/adv/join/', { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
           startingRoom: res.data.current_room,
@@ -104,7 +104,7 @@ class App extends Component {
   hardStart = () => {
     let token = localStorage.getItem('token')
     axios
-      .get('https://maze-mud-server.herokuapp.com/api/adv/join/?columns=10', { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=10`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
           startingRoom: res.data.current_room,

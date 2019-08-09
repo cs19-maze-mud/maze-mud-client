@@ -16,7 +16,7 @@ class Register extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         axios
-            .post('https://maze-mud-server.herokuapp.com/api/registration/', this.state)
+            .post(`${process.env.REACT_APP_SERVER}/api/registration/`, this.state)
             .then(res => {
                 const token = res.data.key;
                 localStorage.setItem('token', token)

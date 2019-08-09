@@ -30,7 +30,8 @@ function Game(props) {
 
             helloWorker.postMessage({
                 token: (localStorage.getItem('token')),
-                startingRoom: props.startingRoom
+                startingRoom: props.startingRoom,
+                server: process.env.REACT_APP_SERVER
             });
             helloWorker.postMessage(assetsObj, [
                 offscreen, ...assetsArray

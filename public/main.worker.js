@@ -28,6 +28,7 @@ self.importScripts("player.worker.js")
     var sidetorch = null;
     var token = null;
     var currentRoom = null;
+    var server = null;
 
     //AVAILABLE DOORS IN CURRENT ROOM
     var s = 1
@@ -41,7 +42,7 @@ self.importScripts("player.worker.js")
 
 
     const handleMove = (direction) => {
-        fetch('https://maze-mud-server.herokuapp.com/api/adv/move/', {
+        fetch(`${server}/api/adv/move/`, {
             method: 'post',
             headers: {
               "Content-type": "application/json; charset=UTF-8",
@@ -99,6 +100,8 @@ self.importScripts("player.worker.js")
             s = startingRoom.s
             e = startingRoom.e
             w = startingRoom.w
+
+            server=event.data.server
         }
         else if (event.data.msg) {
             player1.move(event.data.msg)

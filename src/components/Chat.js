@@ -51,7 +51,7 @@ export default function Chat(props) {
         const token = localStorage.getItem('token');
                 
         axios
-        .post(`https://maze-mud-server.herokuapp.com/api/adv/${type}/`, {message}, { headers: { Authorization: `Token ${token}` } })
+        .post(`${process.env.REACT_APP_SERVER}/api/adv/${type}/`, {message}, { headers: { Authorization: `Token ${token}` } })
         .then()
         .catch(error => {
             console.log(error.message)
