@@ -95,11 +95,11 @@ self.importScripts("player.worker.js")
         if (Object.keys(event.data).includes('token')) {
             token = event.data.token;
 
-            const startingRoom = event.data.startingRoom;
-            n = startingRoom.n
-            s = startingRoom.s
-            e = startingRoom.e
-            w = startingRoom.w
+            const currentRoom = event.data.currentRoom;
+            n = currentRoom.n
+            s = currentRoom.s
+            e = currentRoom.e
+            w = currentRoom.w
 
             server=event.data.server
         }

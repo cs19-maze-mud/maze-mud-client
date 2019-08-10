@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      startingRoom: {}
+      currentRoom: {}
     }
   }
 
@@ -22,12 +22,13 @@ class App extends Component {
       this.setState({
         loggedIn: true
       })
-      this.props.history.push('/lobby')
+      this.getGame()
     }
   }
 
   login = () => {
     this.setState({ loggedIn: true })
+    this.getGame()
   }
 
   logout = () => {
@@ -43,13 +44,38 @@ class App extends Component {
       })
   };
 
+  getGame = () => {
+    const token = localStorage.getItem('token');
+    return axios
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/get_game/`, { headers: { Authorization: `Token ${token}` } })
+      .then(({data}) => {
+        this.setState({
+          inGame: data.in_game,
+          currentRoom: data.current_room,
+          game: data.game,
+          user: data.user,
+          numPlayers: data.game.num_players
+        });
+
+        if (this.state.inGame && this.state.game.in_progress) {
+          this.props.history.push('/game');
+        } else {
+          this.props.history.push('/lobby');
+        }
+
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  };
+
   startGame = () => {
     let token = localStorage.getItem('token')
     axios
       .get(`${process.env.REACT_APP_SERVER}/api/adv/init/`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          startingRoom: {
+          currentRoom: {
             ...res.data.current_room,
             in_progress: res.data.game.in_progress
           },
@@ -69,7 +95,7 @@ class App extends Component {
       .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=3`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          startingRoom: res.data.current_room,
+          currentRoom: res.data.current_room,
           uuid: res.data.user.uuid,
           moveResponse: {
             players: res.data.game.usernames
@@ -88,7 +114,7 @@ class App extends Component {
       .get(`${process.env.REACT_APP_SERVER}/api/adv/join/`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          startingRoom: res.data.current_room,
+          currentRoom: res.data.current_room,
           uuid: res.data.user.uuid,
           moveResponse: {
             players: res.data.game.usernames
@@ -107,7 +133,7 @@ class App extends Component {
       .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=10`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
-          startingRoom: res.data.current_room,
+          currentRoom: res.data.current_room,
           uuid: res.data.user.uuid,
           moveResponse: {
             players: res.data.game.usernames
@@ -118,10 +144,6 @@ class App extends Component {
       .catch(error => {
         console.log(error.message)
       })
-  }
-
-  dumpStartingRoom = () => {
-    this.setState({startingRoom: null})
   }
 
   incrementNumPlayers = () => {
@@ -146,10 +168,10 @@ class App extends Component {
       <div className="container">
         { this.state.loggedIn ? loggedInNav : loggedOutNav }
 
-        <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={ this.normalStart } hardStart={this.hardStart} startGame ={this.startGame} uuid={this.state.uuid} moveResponse={this.state.moveResponse} numPlayers={this.state.numPlayers} incrementNumPlayers={this.incrementNumPlayers}/>} />
+        <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={this.normalStart} hardStart={this.hardStart} startGame ={this.startGame} uuid={this.state.uuid} moveResponse={this.state.moveResponse} numPlayers={this.state.numPlayers} incrementNumPlayers={this.incrementNumPlayers} inGame={this.state.inGame} game={this.state.game} getGame={this.getGame}/>} />
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
-        <Route exact path='/game' render={() => <Game {...this.props} startingRoom={this.state.startingRoom} dumpStartingRoom={this.dumpStartingRoom} uuid={this.state.uuid} username={this.state.username} />} />
+        <Route exact path='/game' render={() => <Game {...this.props} currentRoom={this.state.currentRoom} uuid={this.state.uuid} username={this.state.username} />} />
       </div>
     );
   }
