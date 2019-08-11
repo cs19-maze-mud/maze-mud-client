@@ -10,7 +10,7 @@ function Game(props) {
         setMoveResponse] = useState(null);
 
     useEffect(() => {
-        setMoveResponse(props.startingRoom)
+        setMoveResponse({...props.currentRoom,in_progress: true})
         if (bitMaps.length === document.images.length) {
             const helloWorker = new Worker("main.worker.js");
             helloWorker.onmessage = function ({data}) {
@@ -30,7 +30,8 @@ function Game(props) {
 
             helloWorker.postMessage({
                 token: (localStorage.getItem('token')),
-                startingRoom: props.startingRoom
+                currentRoom: props.currentRoom,
+                server: process.env.REACT_APP_SERVER
             });
             helloWorker.postMessage(assetsObj, [
                 offscreen, ...assetsArray
@@ -49,7 +50,7 @@ function Game(props) {
 
             return () => document.addEventListener("keypress", keyHandler)
         }
-    },[props.startingRoom])
+    },[props.currentRoom])
 
     const loadHandler = event => {
         const name = event.target.id
@@ -61,7 +62,6 @@ function Game(props) {
             ])
         }).catch(err => console.log(err))
     }
-
     if (moveResponse && moveResponse.in_progress) {
         var roomStuff = <div className="room-stuff">
             <h4>{moveResponse.title}</h4>
@@ -71,6 +71,7 @@ function Game(props) {
     } else if (moveResponse && !moveResponse.in_progress) {
         var message = <div className="room-stuff endgame">{moveResponse.message}</div>
     }
+    
 
     return (
         <div>

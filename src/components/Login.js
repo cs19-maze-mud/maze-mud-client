@@ -14,7 +14,7 @@ class Login extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const heroku = 'https://maze-mud-server.herokuapp.com'
+    const heroku = process.env.REACT_APP_SERVER
     axios
       .post(`${heroku}/api/login/`, this.state)
       .then(res => {
@@ -28,10 +28,6 @@ class Login extends React.Component {
       })
     
   };
-
-  sup( data ) {
-    console.log( 'from home' , data )
-  }
 
   render() {
     return (
