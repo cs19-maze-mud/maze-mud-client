@@ -2,20 +2,26 @@ canvas#room-canvas {
     border: 1px solid black;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 1px white;
+<<<<<<< Updated upstream
     height: auto;
     width: 35%;
     margin: 10px auto
+=======
+    height: 400px;
+    max-width: 100%;
+    margin: 20px auto
+>>>>>>> Stashed changes
 }
 
 .room-stuff {
-    margin-top: 20px;
+    margin: 20px auto;
+    font-size: 1.5rem;
 }
 
-.room-stuff.endgame {
+.endgame {
     animation: disco 500ms infinite;
-    width: 40%;
-    margin: 20px auto;
 }
+
 @keyframes disco {
 0% {  color: rgb(248, 47, 47);
         -webkit-text-fill-color: transparent;

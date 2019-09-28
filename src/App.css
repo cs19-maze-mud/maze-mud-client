@@ -1,0 +1,108 @@
+.container {
+  width: 100vw;
+  max-width: 1000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+    .nav-bar {
+        margin-top: 0;
+    }
+}
+
+.nav-bar-items {
+  color: whitesmoke;
+  font-family: 'Press Start 2P', cursive;
+  margin: 0 15px;
+  text-shadow: 2px 2px 2px rgb(50, 150, 128);
+}
+
+.logo {
+    width: 700px;
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .logo {
+        margin: 5px 0;
+    }
+}
+
+.account-container {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 10px;
+  margin: 0 auto;
+  color: white;
+  margin-top: 30px;
+  max-width: 300px;
+}
+
+.account input {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  padding: 10px;
+}
+
+button {
+  margin: 15px auto;
+  color: white;
+  background: grey;
+  border-radius: 5px;
+  padding: 15px;
+  outline: none;
+  margin: 20px;
+  position: relative;
+  box-shadow: 0 6.5px rgb(50, 150, 128);
+  border: 2.5px solid #258b75;
+  letter-spacing: 1.25px;
+  font-family: 'Press Start 2P', cursive;
+}
+button:hover {
+  top: 3px;
+  box-shadow: 0 5px rgb(50, 150, 128);
+}
+button:active {
+  top: 5px;
+  box-shadow: 0 3px rgb(50, 150, 128);
+}
+@media (max-width: 480px) {
+    button {
+        margin: 5px;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+   margin-top: 0;
+   margin-bottom: 0rem;
+   color: rgb(50, 150, 128);
+   font-family: 'Press Start 2P', cursive;
+   text-shadow: 1px 1px whitesmoke;
+  }
+
+@media (max-width: 480px) {
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 1rem;
+    }
+}

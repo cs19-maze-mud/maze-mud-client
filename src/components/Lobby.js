@@ -32,24 +32,24 @@ class Lobby extends React.Component {
     render() {
 
         return (
-            <div className='Lobby'>
-                <img className="logo" src="cave_escape_MUD.png" alt="cave maze logo" />
+            <div>
+                <img className="lobby-logo" src="cave_escape_MUD.png" alt="cave maze logo" />
                 {   
                     !this.state.difficultyChosen
                     ?
-                    <div>
+                    <div className='Lobby'>
                         <h1>Start New Game</h1>
                         <h3>Select Difficulty</h3>
                         <div
                             className='difficulty'
                             onClick={() => this.setState({difficultyChosen: true})}>
-                            <button className="" onClick={this.props.easyStart}>Easy</button>
-                            <button onClick={this.props.normalStart}>Normal</button>
-                            <button onClick={this.props.hardStart}>Hard</button>
+                            <button className="" onClick={this.props.easyStart}>Easy</button><br/>
+                            <button onClick={this.props.normalStart}>Normal</button><br/>
+                            <button onClick={this.props.hardStart}>Hard</button><br/>
                         </div>
                     </div>
                     :
-                    <div>
+                    <div className='Lobby'>
                             <h1>Game Lobby</h1>
                             <div className='start-game'>
                                 {this.props.numPlayers} Players In Lobby<br/>

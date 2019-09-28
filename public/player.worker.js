@@ -9,42 +9,53 @@ function Player(image) {
     this.y = 250
     this.image = image
     this.keypress = {}
-    this.update = function ( ) {
+    this.update = function () {
 
-        if (this.keypress["KeyW"] || this.keypress["ArrowUp"]) {
-            this.collision(0, -10)
-            changeDirections( 'up' )
+        if ((this.keypress["KeyW"] || this.keypress["ArrowUp"]) && n >= 0) {
+            var stop
+            stop = setInterval(() => {
+                this.collision(0, -10, stop)
+            },25)
+            changeDirections('up')
         }
 
-        if (this.keypress["KeyS"] || this.keypress["ArrowDown"]) {
-            this.collision(0, 10)
-            changeDirections( 'down' )
+        if ((this.keypress["KeyS"] || this.keypress["ArrowDown"]) && s >= 0) {
+            var stop
+            stop = setInterval(() => {
+                this.collision(0, 10, stop)
+            }, 25)
+            changeDirections('down')
         }
 
-        if (this.keypress["KeyD"] || this.keypress["ArrowRight"]) {
-            this.collision(10, 0)
-            changeDirections( 'right' )
+        if ((this.keypress["KeyD"] || this.keypress["ArrowRight"]) && e >= 0) {
+            var stop
+            stop = setInterval(() => {
+                this.collision(10,0, stop)
+            }, 25)
+            changeDirections('right')
         }
 
-        if (this.keypress["KeyA"] || this.keypress["ArrowLeft"]) {
-            this.collision(-10, 0)
-            changeDirections( 'left' )
+        if ((this.keypress["KeyA"] || this.keypress["ArrowLeft"]) && w >= 0) {
+            var stop
+            stop = setInterval(() => {
+                this.collision(-10, 0, stop)
+            }, 25)
+            changeDirections('left')
         }
 
     }
 
-    //DIAGINAL
+    //DIAGONAL
     this.move = function (key) {
         if (key.keydown) {
             this.keypress[key.keydown] = true
-        } 
+        }
 
         if (key.keyup) {
             delete this.keypress[key.keyup]
         }
 
-        this.update( )
-
+        this.update()
     }
 
     function changeDirections( direction ) {
@@ -142,43 +153,50 @@ function Player(image) {
         ctx.drawImage( this.image, animation[0], animation[1], 17, 16, this.x, this.y, 40, 39 )
     }
 
-    this.collision = function (x_mov, y_mov) {
-
-        if (this.x + x_mov <= 470 && this.x + x_mov >= 20) {
-            this.x += x_mov
-        }
-
-        if (this.y + y_mov <= 470 && this.y + y_mov >= 20) {
-            this.y += y_mov
-        }
-
+    this.collision = function (x_mov, y_mov,stop) {
 
         //DOOR TO THE EAST
         if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
             if ( e >= 0 ) {
-                nextRoom( 'east' );
+                nextRoom('east')
+                clearInterval(stop)
             }
         }
 
         //DOOR TO WEST
         if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
             if ( w >= 0 ) {
-                nextRoom( 'west' )
+                nextRoom('west')
+                clearInterval(stop)
             }
         }
 
         //DOOR TO NORTH
         if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
             if ( n >= 0 ) {
-                nextRoom( 'north' )
+                nextRoom('north')
+                clearInterval(stop)
             }
         }
 
         //DOOR TO SOUTH
         if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
             if ( s >= 0 ) {
-                nextRoom( 'south' )
+                nextRoom('south')
+                clearInterval(stop)
             }
+        }
+
+        if (this.x + x_mov <= 470 && this.x + x_mov >= 20) {
+            this.x += x_mov
+        } else {
+            clearInterval(stop)
+        }
+
+        if (this.y + y_mov <= 470 && this.y + y_mov >= 20) {
+            this.y += y_mov
+        } else {
+            clearInterval(stop)
         }
     }
 }

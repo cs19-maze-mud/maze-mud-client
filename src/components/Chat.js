@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import axios from 'axios';
 import Pusher from 'pusher-js';
 import './Chat.css'
@@ -6,12 +6,13 @@ import './Chat.css'
 export default function Chat(props) {
     const [chat,setChat] = useState([]);
     const [msg,setMsg] = useState({});
-    const [type,setType] = useState('Shout');
+    const [type, setType] = useState('Shout');
+    const chatBoxEnd = useRef(null);
 
     useEffect(() => {
         const newChat = [...chat, msg]
         setChat(newChat);
-    },[msg])
+    },[chat, msg])
 
     useEffect(() => {
         if(props.uuid) {
@@ -39,10 +40,11 @@ export default function Chat(props) {
                     }
                 } else {
                     setMsg(data);
+                    scrollToBottom();
                 }
             });
         }
-    },[props.uuid])
+    },[props, props.uuid])
 
     const chatHandler = (event) => {
         event.preventDefault();
@@ -56,6 +58,11 @@ export default function Chat(props) {
         .catch(error => {
             console.log(error.message)
         })
+
+        //Update chat box
+        const newChat = [...chat, { message: `${props.user.username}: ` + message }]
+        setChat(newChat);
+        scrollToBottom();
     
     }
     
@@ -64,11 +71,21 @@ export default function Chat(props) {
         setType(type.charAt(0).toUpperCase() + type.slice(1))
     }
 
+    const scrollToBottom = () => {
+        if (chatBoxEnd.current) {
+            chatBoxEnd.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
     return (
         <div>
             <div className="chat-box">
-                {chat.reverse().map((mess,i)=><div key={i}>{mess.message}</div>)}
+                {chat.map((mess,i)=><div key={i}>{mess.message}</div>)}
                 {props.moveResponse && props.moveResponse.players && props.moveResponse.players.length > 0 && <span>{props.moveResponse.players.map((p,i) => <span key={i}>{p} is already here!</span>)}</span>}
+                <br/>
+                <div style={{ float: "left", clear: "both" }}
+                    ref={chatBoxEnd}>
+                </div>
             </div>
             <form className="chat-form" onSubmit={chatHandler}>
                 <input id="message" type="text"/>

@@ -8,10 +8,15 @@ function Game(props) {
         setBitMaps] = useState([]);
     const [moveResponse,
         setMoveResponse] = useState(null);
+    const [loaded,
+        setLoaded] = useState(false);
 
     useEffect(() => {
-        setMoveResponse({...props.currentRoom,in_progress: true})
-        if (bitMaps.length === document.images.length) {
+        //Make sure the bitMaps and room info are both fully loaded
+        //Ensure the canvas was not already sent offscreen
+        if (bitMaps.length === 2 && props.currentRoom && props.currentRoom.title && !loaded) {
+            setLoaded(true)
+            setMoveResponse({ ...props.currentRoom, in_progress: true })
             const helloWorker = new Worker("main.worker.js");
             helloWorker.onmessage = function ({data}) {
                 setMoveResponse(data)
@@ -44,13 +49,10 @@ function Game(props) {
                     }
                 });
             }
-
             document.addEventListener("keyup", keyHandler)
             document.addEventListener("keydown", keyHandler)
-
-            return () => document.addEventListener("keypress", keyHandler)
         }
-    },[props.currentRoom])
+    },[bitMaps, loaded, props.currentRoom])
 
     const loadHandler = event => {
         const name = event.target.id
@@ -69,6 +71,7 @@ function Game(props) {
             <br/>
         </div>
     } else if (moveResponse && !moveResponse.in_progress) {
+        setTimeout(()=>props.getGame(),3000)
         var message = <div className="room-stuff endgame">{moveResponse.message}</div>
     }
     

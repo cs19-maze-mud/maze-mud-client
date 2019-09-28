@@ -48,14 +48,22 @@ class App extends Component {
     const token = localStorage.getItem('token');
     return axios
       .get(`${process.env.REACT_APP_SERVER}/api/adv/get_game/`, { headers: { Authorization: `Token ${token}` } })
-      .then(({data}) => {
-        this.setState({
-          inGame: data.in_game,
-          currentRoom: data.current_room,
-          game: data.game,
-          user: data.user,
-          numPlayers: data.game.num_players
-        });
+      .then(({ data }) => {
+
+        if (data.in_game) { 
+          this.setState({
+            inGame: data.in_game,
+            currentRoom: data.current_room,
+            game: data.game,
+            user: data.user,
+            numPlayers: data.game.num_players
+          });
+        } else {
+          this.setState({
+            inGame: false,
+            user: data.user
+          });
+        }
 
         if (this.state.inGame && this.state.game.in_progress) {
           this.props.history.push('/game');
@@ -78,9 +86,7 @@ class App extends Component {
           currentRoom: {
             ...res.data.current_room,
             in_progress: res.data.game.in_progress
-          },
-          uuid: res.data.user.uuid,
-          username: res.data.user.uuid
+          }
         })
       })
       .catch(error => {
@@ -153,25 +159,25 @@ class App extends Component {
   render() {
     const loggedInNav = <nav className="nav-bar">
       <h2 className="title">Cave Escape MUD</h2>
-      <NavLink to='/lobby' className='nav-bar-items'>Lobby</NavLink>
-      <NavLink onClick={this.logout} className='logout nav-bar-items' to='/' >Logout</NavLink>
+      <div>
+        <NavLink to='/lobby' className='nav-bar-items'>Lobby</NavLink>
+        <NavLink onClick={this.logout} className='logout nav-bar-items' to='/' >Logout</NavLink>
+      </div>
     </nav>
 
     const loggedOutNav = <div>
       <h2 className="title">Cave Escape MUD</h2>
-      <nav className="nav-bar">
         <img className="logo" src="cave_escape_MUD.png" alt="cave maze logo" />
-      </nav>
     </div>
 
     return (
       <div className="container">
         { this.state.loggedIn ? loggedInNav : loggedOutNav }
 
-        <Route exact path='/lobby' render={() => <Lobby {...this.props} easyStart={ this.easyStart } normalStart={this.normalStart} hardStart={this.hardStart} startGame ={this.startGame} uuid={this.state.uuid} moveResponse={this.state.moveResponse} numPlayers={this.state.numPlayers} incrementNumPlayers={this.incrementNumPlayers} inGame={this.state.inGame} game={this.state.game} getGame={this.getGame}/>} />
+        <Route exact path='/lobby' render={() => <Lobby {...this.props} {...this.state} easyStart={this.easyStart} normalStart={this.normalStart} hardStart={this.hardStart} startGame={this.startGame} incrementNumPlayers={this.incrementNumPlayers} getGame={this.getGame}/>} />
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
-        <Route exact path='/game' render={() => <Game {...this.props} currentRoom={this.state.currentRoom} uuid={this.state.uuid} username={this.state.username} />} />
+        <Route exact path='/game' render={() => <Game {...this.props} {...this.state} getGame={this.getGame} />} />
       </div>
     );
   }
