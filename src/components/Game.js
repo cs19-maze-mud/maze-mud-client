@@ -1,6 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react';
 import "./game.css";
 import Chat from './Chat';
+import mainCanvas from '../canvas/main';
 
 function Game(props) {
     const mazeCanvasRef = useRef(null);
@@ -17,38 +18,28 @@ function Game(props) {
         if (bitMaps.length === 2 && props.currentRoom && props.currentRoom.title && !loaded) {
             setLoaded(true)
             setMoveResponse({ ...props.currentRoom, in_progress: true })
-            const helloWorker = new Worker("main.worker.js");
-            helloWorker.onmessage = function ({data}) {
-                setMoveResponse(data)
-            }
-            const offscreen = mazeCanvasRef
-                .current
-                .transferControlToOffscreen();
-
-            const assetsObj = {
-                canvas: offscreen
+            const canvas = mazeCanvasRef.current
+            const assets = {
+                canvas
             }
             bitMaps.forEach(e => {
-                assetsObj[Object.keys(e)[0]] = Object.values(e)[0];
+                assets[Object.keys(e)[0]] = Object.values(e)[0];
             })
-            const assetsArray = bitMaps.map(e => Object.values(e)[0]);
+            // const assetsArray = bitMaps.map(e => Object.values(e)[0]);
 
-            helloWorker.postMessage({
-                token: (localStorage.getItem('token')),
-                currentRoom: props.currentRoom,
-                server: process.env.REACT_APP_SERVER
-            });
-            helloWorker.postMessage(assetsObj, [
-                offscreen, ...assetsArray
-            ]);
+            mainCanvas.initializeCanvas(
+                setMoveResponse,
+                props.currentRoom,
+                assets,
+                canvas
+            )
 
             const keyHandler = function (event) {
-                helloWorker.postMessage({
-                    msg: {
-                        [event.type]: event.code
-                    }
-                });
+                mainCanvas.userInputHandler({
+                    [event.type]: event.code
+                })
             }
+
             document.addEventListener("keyup", keyHandler)
             document.addEventListener("keydown", keyHandler)
         }

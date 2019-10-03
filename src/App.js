@@ -49,7 +49,6 @@ class App extends Component {
     return axios
       .get(`${process.env.REACT_APP_SERVER}/api/adv/get_game/`, { headers: { Authorization: `Token ${token}` } })
       .then(({ data }) => {
-
         if (data.in_game) { 
           this.setState({
             inGame: data.in_game,

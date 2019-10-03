@@ -23,9 +23,9 @@ class Lobby extends React.Component {
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.inGame) {
-            this.state = {
+            this.setState({
                 difficultyChosen: nextProps.inGame
-            }
+            })
         }
     }
 
