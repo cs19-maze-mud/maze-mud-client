@@ -18,6 +18,8 @@ function Game(props) {
         if (bitMaps.length === 2 && props.currentRoom && props.currentRoom.title && !loaded) {
             setLoaded(true)
             setMoveResponse({ ...props.currentRoom, in_progress: true })
+
+            //Prepare assets and send them to /canvas/main.js
             const canvas = mazeCanvasRef.current
             const assets = {
                 canvas
@@ -25,21 +27,18 @@ function Game(props) {
             bitMaps.forEach(e => {
                 assets[Object.keys(e)[0]] = Object.values(e)[0];
             })
-            // const assetsArray = bitMaps.map(e => Object.values(e)[0]);
-
             mainCanvas.initializeCanvas(
                 setMoveResponse,
                 props.currentRoom,
                 assets,
                 canvas
             )
-
+            //Setup event listener to handle user actions
             const keyHandler = function (event) {
                 mainCanvas.userInputHandler({
                     [event.type]: event.code
                 })
             }
-
             document.addEventListener("keyup", keyHandler)
             document.addEventListener("keydown", keyHandler)
         }
