@@ -1,13 +1,10 @@
 .container {
+  height: 100vh;
   width: 100vw;
   max-width: 1000px;
-  min-height: 100vh;
   margin: 0 auto;
   padding: 10px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .nav-bar {
@@ -21,8 +18,12 @@
 
 @media (max-width: 480px) {
     .nav-bar {
-        margin-top: 0;
+      margin-top: 0;
     }
+}
+
+.nav-bar-hidden {
+  display: none;
 }
 
 .nav-bar-items {
@@ -90,6 +91,7 @@ button:active {
 @media (max-width: 480px) {
     button {
         margin: 5px;
+        padding: 5px 15px;
     }
 }
 

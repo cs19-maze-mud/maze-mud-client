@@ -1,17 +1,19 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, Fragment} from 'react';
 import axios from 'axios';
 import Pusher from 'pusher-js';
 import './Chat.css'
 
 export default function Chat(props) {
-    const [chat,setChat] = useState([]);
+    const [chatBox,setChatBox] = useState([]);
     const [msg,setMsg] = useState({});
     const [type, setType] = useState('Shout');
+    const [chat, setChat] = useState("chat-off");
+    const [help, setHelp] = useState("help-off");
     const chatBoxEnd = useRef(null);
 
     useEffect(() => {
-        const newChat = [...chat, msg]
-        setChat(newChat);
+        const newChatBox = [...chat, msg]
+        setChatBox(newChatBox);
     },[chat, msg])
 
     useEffect(() => {
@@ -60,8 +62,8 @@ export default function Chat(props) {
         })
 
         //Update chat box
-        const newChat = [...chat, { message: `${props.user.username}: ` + message }]
-        setChat(newChat);
+        const newChatBox = [...chatBox, { message: `${props.user.username}: ` + message }]
+        setChatBox(newChatBox);
         scrollToBottom();
     
     }
@@ -77,24 +79,75 @@ export default function Chat(props) {
         }
     }
 
+    const chatToggleHandler = () => {        
+        if (chat === 'chat-off') {
+            setChat('chat-on')
+        } else {
+            setChat('chat-off')
+        }
+    }
+
+    const helpToggleHandler = () => {
+        if (help === 'help-off') {
+            setHelp('help-on')
+        } else {
+            setHelp('help-off')
+        }
+    }
+
     return (
-        <div>
-            <div className="chat-box">
-                {chat.map((mess,i)=><div key={i}>{mess.message}</div>)}
-                {props.moveResponse && props.moveResponse.players && props.moveResponse.players.length > 0 && <span>{props.moveResponse.players.map((p,i) => <span key={i}>{p} is already here!</span>)}</span>}
-                <br/>
-                <div style={{ float: "left", clear: "both" }}
-                    ref={chatBoxEnd}>
+        <Fragment>
+            <div className={chat}>
+                <div className="chat-box">
+                    {chatBox.map((mess,i)=><div key={i}>{mess.message}</div>)}
+                    {props.moveResponse && props.moveResponse.players && props.moveResponse.players.length > 0 && <span>{props.moveResponse.players.map((p,i) => <span key={i}>{p} is already here!</span>)}</span>}
+                    <br/>
+                    <div style={{ float: "left", clear: "both" }}
+                        ref={chatBoxEnd}>
+                    </div>
                 </div>
+                <form className="chat-form" onSubmit={chatHandler}>
+                    <input id="message" type="text"/>
+                    <select id="type" onChange={typeHandler}>
+                        <option value="shout">Shout</option>
+                        <option value="say">Say</option>
+                    </select><br/>
+                    <button type="submit">{type}</button>
+                </form>
             </div>
-            <form className="chat-form" onSubmit={chatHandler}>
-                <input id="message" type="text"/>
-                <select id="type" onChange={typeHandler}>
-                    <option value="shout">Shout</option>
-                    <option value="say">Say</option>
-                </select><br/>
-                <button type="submit">{type}</button>
-            </form>
-        </div>
+            <div className={help}>
+                <h1>Directions:</h1> <br/>
+                <h3 className="directions">
+                    1. You are inside a maze, so try to escape from it!
+                </h3>
+                <h3 className="directions">
+                    2. There may be doors you can exit through to your North, South, East, or West!
+                </h3>
+                <h3 className="directions desktop">
+                    3. Move with your arrow keys, or user the W, A, S or D keys
+                </h3>
+                <h3 className="directions mobile">
+                    3. Move by dragging your finger in the direction you want to go
+                </h3>
+                <h3 className="directions mobile">
+                    4. If you want to stop or change directions, then lift your finger off the screen
+                    and drag in a new direction
+                </h3>
+            </div>
+            <div className="chat-buttons">
+                {
+                    help === 'help-off' &&
+                    <button className="chat-button" onClick={chatToggleHandler}>
+                        {chat === 'chat-off' ? 'Chat' : 'Close Chat'}
+                    </button>
+                }
+                {
+                    chat === 'chat-off' &&
+                    <button className="help-button" onClick={helpToggleHandler} >
+                        {help === 'help-off' ? 'Help' : 'Close Help'}
+                    </button>
+                }
+            </div>
+        </Fragment>
     )
 }

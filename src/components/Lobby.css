@@ -1,4 +1,11 @@
-.Lobby {
+.lobby-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.lobby {
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -7,35 +14,45 @@
     height: 100%;
 }
 
-.Lobby button {
+.lobby button {
     margin: 15px;
     position: relative;
     box-shadow: 0 6.5px rgb(50, 150, 128);
     border: 2.5px solid #258b75;
+    outline: none;
 }
-.Lobby button:hover {
+.lobby button:hover {
     top: 3px;
     box-shadow: 0 5px rgb(50, 150, 128);
 }
-.Lobby button:active {
+.lobby button:active {
     top: 5px;
     box-shadow: 0 3px rgb(50, 150, 128);
 }
+
 @media (max-width: 480px) {
-    .Lobby button {
-        margin: 10px;
+    .lobby button {
+        margin: 10px auto;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lobby .difficulty {
+        display: flex;
+        flex-direction: column;
     }
 }
 
 .lobby-logo {
-    width: 500px;
+    width: 700px;
     max-width: 100%;
     border-radius: 10px;
-    margin: 20px 0;
+    margin: 20px auto;
 }
 
 @media (max-width: 480px) {
     .lobby-logo {
-        display: none
+        margin: 5px 0;
     }
 }

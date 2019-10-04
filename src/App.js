@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   startGame = () => {
-    let token = localStorage.getItem('token')
+    const token = localStorage.getItem('token')
     axios
       .get(`${process.env.REACT_APP_SERVER}/api/adv/init/`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
@@ -94,48 +94,22 @@ class App extends Component {
       this.props.history.push( '/game' )
   }
 
-  easyStart = () => {
-    let token = localStorage.getItem('token')
+  selectDifficulty = (difficulty) => {
+    let columns
+    switch (difficulty) {
+      case 'medium':
+        columns = 4
+        break
+      case 'hard':
+        columns = 5
+        break
+      default:
+        columns = 3
+    }
+    console.log(columns)
+    const token = localStorage.getItem('token')
     axios
-      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=3`, { headers: { Authorization: `Token ${token}` } })
-      .then(res => {
-        this.setState({
-          currentRoom: res.data.current_room,
-          uuid: res.data.user.uuid,
-          moveResponse: {
-            players: res.data.game.usernames
-          },
-          numPlayers: res.data.game.num_players,
-        })
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
-  }
-
-  normalStart = () => {
-    let token = localStorage.getItem('token')
-    axios
-      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/`, { headers: { Authorization: `Token ${token}` } })
-      .then(res => {
-        this.setState({
-          currentRoom: res.data.current_room,
-          uuid: res.data.user.uuid,
-          moveResponse: {
-            players: res.data.game.usernames
-          },
-          numPlayers: res.data.game.num_players,
-        })
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
-  }
-
-  hardStart = () => {
-    let token = localStorage.getItem('token')
-    axios
-      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=10`, { headers: { Authorization: `Token ${token}` } })
+      .get(`${process.env.REACT_APP_SERVER}/api/adv/join/?columns=${columns}`, { headers: { Authorization: `Token ${token}` } })
       .then(res => {
         this.setState({
           currentRoom: res.data.current_room,
@@ -156,7 +130,7 @@ class App extends Component {
   }
 
   render() {
-    const loggedInNav = <nav className="nav-bar">
+    const loggedInNav = <nav className = "nav-bar">
       <h2 className="title">Cave Escape MUD</h2>
       <div>
         <NavLink to='/lobby' className='nav-bar-items'>Lobby</NavLink>
@@ -173,7 +147,7 @@ class App extends Component {
       <div className="container">
         { this.state.loggedIn ? loggedInNav : loggedOutNav }
 
-        <Route exact path='/lobby' render={() => <Lobby {...this.props} {...this.state} easyStart={this.easyStart} normalStart={this.normalStart} hardStart={this.hardStart} startGame={this.startGame} incrementNumPlayers={this.incrementNumPlayers} getGame={this.getGame}/>} />
+        <Route exact path='/lobby' render={() => <Lobby {...this.props} {...this.state} selectDifficulty={this.selectDifficulty} startGame={this.startGame} incrementNumPlayers={this.incrementNumPlayers} getGame={this.getGame}/>} />
         <Route exact path='/register' render={() => <Register {...this.props} login={this.login}/>} />
         <Route exact path='/' render={() => <Login {...this.props} login={this.login} />} />
         <Route exact path='/game' render={() => <Game {...this.props} {...this.state} getGame={this.getGame} />} />

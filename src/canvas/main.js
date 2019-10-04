@@ -50,17 +50,20 @@ const handleMove = (direction) => {
 
 function nextRoom(direction) {
     if (direction === 'south') {
-        player1.y = 10
+        player1.y = 40
+        player1.x = 250
         handleMove('s')
     } else if (direction === 'north') {
-        player1.y = 470
+        player1.y = 430
+        player1.x = 250
         handleMove('n')
     } else if (direction === 'west') {
-        player1.x = 470
+        player1.x = 450
         player1.y = 250
         handleMove('w')
     } else {
         player1.x = 20
+        player1.y = 250
         handleMove('e')
     }
 }
@@ -205,38 +208,39 @@ function Player(image) {
 
     this.collision = function (x_mov, y_mov) {
 
-        if (this.x + x_mov <= 470 && this.x + x_mov >= 20) {
+        if (this.x + x_mov <= 450 && this.x + x_mov >= 10) {
             this.x += x_mov
         }
 
-        if (this.y + y_mov <= 470 && this.y + y_mov >= 20) {
+        if (this.y + y_mov <= 450 && this.y + y_mov >= 10) {
             this.y += y_mov
         }
 
+        console.log(this.x,this.y)
 
         //DOOR TO THE EAST
-        if (this.x + x_mov >= 470 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
+        if (this.x + x_mov >= 460 && this.y + y_mov >= 210 && this.y + y_mov <= 280) {
             if (e >= 0) {
                 nextRoom('east');
             }
         }
 
         //DOOR TO WEST
-        if (this.x + x_mov === 20 && this.y + y_mov >= 230 && this.y + y_mov <= 260) {
+        if (this.x + x_mov === 10 && this.y + y_mov >= 210 && this.y + y_mov <= 280) {
             if (w >= 0) {
                 nextRoom('west')
             }
         }
 
         //DOOR TO NORTH
-        if (this.x + x_mov >= 230 && this.x + x_mov <= 260 && this.y + y_mov === 20) {
+        if (this.x + x_mov >= 210 && this.x + x_mov <= 280 && this.y + y_mov === 10) {
             if (n >= 0) {
                 nextRoom('north')
             }
         }
 
         //DOOR TO SOUTH
-        if (this.x + x_mov >= 225 && this.x + x_mov <= 260 && this.y + y_mov === 470) {
+        if (this.x + x_mov >= 210 && this.x + x_mov <= 280 && this.y + y_mov === 460) {
             if (s >= 0) {
                 nextRoom('south')
             }
