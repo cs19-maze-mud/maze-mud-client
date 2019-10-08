@@ -1,21 +1,40 @@
-canvas#room-canvas {
+.game-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#room-canvas {
     border: 1px solid black;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 1px white;
-    height: auto;
-    width: 35%;
-    margin: 10px auto
+    height: 500px;
+    max-width: 100%;
+    margin: 20px auto
+}
+
+@media (max-width: 480px) {
+    #room-canvas {
+        height: 350px;
+    }
 }
 
 .room-stuff {
-    margin-top: 20px;
+    margin: 20px auto;
+    font-size: 1.5rem;
 }
 
-.room-stuff.endgame {
-    animation: disco 500ms infinite;
-    width: 40%;
-    margin: 20px auto;
+@media (max-width: 480px) {
+    .room-stuff {
+        margin: 5px auto;
+    }
 }
+
+.endgame {
+    animation: disco 500ms infinite;
+}
+
 @keyframes disco {
 0% {  color: rgb(248, 47, 47);
         -webkit-text-fill-color: transparent;

@@ -32,7 +32,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <div className='LoginContainer'>        
+        <div className='account-container'>        
           <h2>Login</h2>
           
           <form className="account" onSubmit={this.handleSubmit}>
@@ -55,7 +55,7 @@ class Login extends React.Component {
           </form>
         </div>
         <div>
-          <NavLink className='nav-bar-items' exact to='/register'> Register Here </NavLink>
+          <NavLink className='nav-bar-items' to='/register'> Register Here </NavLink>
         </div>
       </div>
     );
